@@ -40,14 +40,14 @@ async function testBasicInit() {
     
     // Test CLAUDE.md has actual content (should be 2200-2600 bytes after rendering)
     const claudeContent = await fs.readFile(claudeFile, 'utf-8');
-    if (!claudeContent.includes('# Create Claude')) {
+    if (!claudeContent.includes('# Project Configuration')) {
       throw new Error('CLAUDE.md missing required header');
     }
     if (!claudeContent.includes('Brutal efficiency')) {
       throw new Error('CLAUDE.md missing expected content');
     }
-    if (claudeContent.length < 2200 || claudeContent.length > 2600) {
-      throw new Error(`CLAUDE.md has unexpected size: ${claudeContent.length} bytes (expected 2200-2600)`);
+    if (claudeContent.length < 800 || claudeContent.length > 1200) {
+      throw new Error(`CLAUDE.md has unexpected size: ${claudeContent.length} bytes (expected 800-1200)`);
     }
     // Verify template was properly rendered (no unreplaced variables)
     if (claudeContent.includes('{{') || claudeContent.includes('}}')) {
@@ -289,7 +289,7 @@ async function testConcurrentInit() {
     
     // Check CLAUDE.md integrity
     const claudeContent = await fs.readFile(claudeFile, 'utf-8');
-    if (!claudeContent.includes('# Create Claude')) {
+    if (!claudeContent.includes('# Project Configuration')) {
       throw new Error('CLAUDE.md corrupted - missing header');
     }
     if (claudeContent.includes('null') || claudeContent.includes('undefined')) {
