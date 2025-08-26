@@ -1,4 +1,4 @@
-# create-claude
+# `create-claude`
 
 > Turn Claude Code into an autonomous coding partner. Zero interruptions. Pure productivity.
 
