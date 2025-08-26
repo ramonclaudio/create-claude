@@ -1,6 +1,6 @@
 # Project Configuration
 
-Code first. No fluff. Ship fast.
+Brutal efficiency. Code first. Ship fast.
 
 ## Rules
 
