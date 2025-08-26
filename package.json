@@ -1,6 +1,6 @@
 {
   "name": "create-claude",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Production-ready Claude Code setup with bulletproof file safety. One command installs agents, hooks, commands and templates with atomic backups.",
   "type": "module",
   "sideEffects": false,
