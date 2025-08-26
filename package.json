@@ -64,7 +64,6 @@
   "cpu": ["x64", "arm64"],
   "preferGlobal": false,
   "publishConfig": {
-    "provenance": true,
     "access": "public"
   },
   "devDependencies": {
