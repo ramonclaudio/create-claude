@@ -1,0 +1,74 @@
+{
+  "name": "create-claude",
+  "version": "0.1.0",
+  "description": "Production-ready Claude Code setup with bulletproof file safety. One command installs agents, hooks, commands and templates with atomic backups.",
+  "type": "module",
+  "sideEffects": false,
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./cli": "./dist/cli.js"
+  },
+  "bin": {
+    "create-claude": "./dist/cli.js",
+    "cld": "./dist/cli.js"
+  },
+  "files": [
+    "dist",
+    "skel",
+    "README.md",
+    "LICENSE",
+    "DISCLAIMER.md",
+    "CHANGELOG.md"
+  ],
+  "scripts": {
+    "build": "node -e \"require('fs').rmSync('dist',{recursive:true,force:true})\" && tsc",
+    "dev": "npm run build && node dist/cli.js",
+    "test": "npm run build && npm run test:integration",
+    "test:integration": "node test/integration.cjs",
+    "typecheck": "tsc --noEmit",
+    "lint": "tsc --noEmit --strict",
+    "clean": "node -e \"require('fs').rmSync('dist',{recursive:true,force:true})\"",
+    "validate": "npm run typecheck && npm run lint",
+    "prepack": "npm run validate && npm run test",
+    "prepublishOnly": "npm run validate && npm run test",
+    "postpack": "echo 'Package created successfully'",
+    "version": "npm run build && git add -A"
+  },
+  "keywords": [
+    "claude",
+    "claude-code",
+    "cli",
+    "setup",
+    "template"
+  ],
+  "author": "RMNCLDYO <hi@rmncldyo.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RMNCLDYO/create-claude.git"
+  },
+  "bugs": {
+    "url": "https://github.com/RMNCLDYO/create-claude/issues"
+  },
+  "homepage": "https://github.com/RMNCLDYO/create-claude#readme",
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  },
+  "os": ["darwin", "linux", "win32"],
+  "cpu": ["x64", "arm64"],
+  "preferGlobal": false,
+  "publishConfig": {
+    "provenance": true,
+    "access": "public"
+  },
+  "devDependencies": {
+    "@types/node": "^20.19.11",
+    "typescript": "^5.3.0"
+  }
+}

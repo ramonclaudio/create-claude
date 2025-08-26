@@ -1,0 +1,92 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash",
+      "Edit", 
+      "Glob",
+      "Grep",
+      "LS",
+      "MultiEdit",
+      "NotebookEdit",
+      "NotebookRead", 
+      "Read",
+      "Task",
+      "TodoWrite",
+      "WebFetch",
+      "WebSearch",
+      "Write"
+    ],
+    "deny": [
+      "Bash(*sudo*)",
+      "Bash(*su *)",
+      "Bash(*doas*)",
+      "Bash(*eval*)",
+      "Bash(*|*sh*)",
+      "Bash(*|*bash*)",
+      "Bash(*curl*|*sh*)",
+      "Bash(*wget*|*sh*)",
+      "Read(/etc/**)",
+      "Read(/root/**)",
+      "Read(/sys/**)",
+      "Read(/proc/**)",
+      "Read(**/.env*)",
+      "Read(**/secrets/**)",
+      "Read(~/.ssh/**)",
+      "Read(**/*.key)",
+      "Read(**/*.pem)",
+      "Edit(/etc/**)",
+      "Edit(/root/**)",
+      "Edit(/sys/**)",
+      "Edit(/proc/**)",
+      "Write(/etc/**)",
+      "Write(/root/**)",
+      "Write(/sys/**)",
+      "Write(/proc/**)"
+    ],
+    "ask": [
+      "Bash(*rm *)",
+      "Bash(*rmdir*)",
+      "Bash(*trash*)",
+      "Bash(*find*-delete*)",
+      "Bash(*xargs*rm*)",
+      "Bash(*dd *)",
+      "Bash(*mkfs*)",
+      "Bash(*fdisk*)",
+      "mcp__filesystem__delete*",
+      "mcp__filesystem__move*"
+    ],
+    "defaultMode": "bypassPermissions"
+  },
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|MultiEdit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node $CLAUDE_PROJECT_DIR/.claude/hooks/format.cjs",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Bash|Read|Edit|Write|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node $CLAUDE_PROJECT_DIR/.claude/hooks/safety.cjs",
+            "timeout": 5
+          }
+        ]
+      }
+    ]
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "node $CLAUDE_PROJECT_DIR/.claude/scripts/statusline.cjs",
+    "padding": 0
+  },
+  "outputStyle": "terse"
+}
