@@ -1,82 +1,47 @@
-# Create Claude
+# Project Configuration
 
-Brutal efficiency. Zero tolerance for bloat. Direct communication.
+Code first. No fluff. Ship fast.
 
-**Response format**:
-```
-PROBLEM: [One sentence]
-FIX: [Minimal working solution]  
-NOT DOING: [Complexity you avoided]
-```
+## Rules
 
-# RULES
+- Functions: <50 lines or refactor
+- Commits: `feat:` `fix:` `docs:` `chore:` `refactor:` `test:` `perf:`
+- No dead code
+- No debug statements in production
+- Early returns, no deep nesting
+- Fix it or delete it - no TODO comments
+- One thing per commit
+- Test before push
 
-**Code**:
-- Functions >50 lines = design failure
-- No unused code. Delete it.
-- Early returns, no nesting
+## Commands
 
-**Version Control**:
-- Follow Semantic Versioning (MAJOR.MINOR.PATCH)
-- Use Conventional Commits for all commits
-- Branch naming: `feat/*`, `fix/*`, `docs/*`, `chore/*`, `refactor/*`
-- PR titles must follow conventional commit format
+- `/validate` - Lint, typecheck, format
+- `/test` - Run all tests
 
-**Commit Format**:
-- `feat:` New features (MINOR version bump)
-- `fix:` Bug fixes (PATCH version bump)  
-- `docs:` Documentation changes
-- `chore:` Maintenance tasks
-- `refactor:` Code restructuring
-- `test:` Test additions/changes
-- `perf:` Performance improvements
-- `BREAKING CHANGE:` Major version bump
+## Automation
 
-**Workflow**:
-- Use `/validate` for lint/typecheck/format
-- Use `/test` for testing
-- Use `pre-commit` agent before commits
-- Use `refactor` agent for code cleanup
-- `format` hook runs on file save (with 10MB safety limit)
-- `safety` hook blocks destructive commands and sensitive file access
-- Delete unused code immediately
-- Create todo lists for complex tasks
-- Signal handlers provide clean shutdown (SIGINT/SIGTERM)
+- Auto-format on save
+- Pre-commit validation
+- Smart safety boundaries
 
-**Safety**:
-- All file operations use atomic copying with SHA256 verification
-- Existing configs backed up to timestamped directories
-- Zero data loss guarantee with 5-step integrity validation
-- Auto-recovery on any operation failure
+## Project
 
-**Never**:
-- Functions over 50 lines
-- Wrong package manager commands
-- Unsafe file operations (blocked by safety hooks)
-- Committing without pre-commit validation
+Path: {{PROJECT_PATH}}
+Runtime: {{RUNTIME}}{{#HAS_FRAMEWORK}}
+Framework: {{FRAMEWORK}}{{/HAS_FRAMEWORK}}{{#HAS_PACKAGE_MANAGER}}
+Package Manager: {{PACKAGE_MANAGER}}{{/HAS_PACKAGE_MANAGER}}{{#HAS_GIT}}
+Version Control: {{VERSION_CONTROL}}{{/HAS_GIT}}{{#PURPOSE}}
+Purpose: {{PURPOSE}}{{/PURPOSE}}
 
-# TOOLCHAIN
+## Response Style
 
-**Installed by create-claude v0.1.0**:
-- Production agents: `pre-commit`, `refactor`
-- Safety hooks: `format.cjs`, `safety.cjs` 
-- Commands: `/validate`, `/test`
-- Statusline: Dynamic project context with Git integration
-- Output style: `terse` (minimal, efficient responses)
-- Backup system: Atomic operations with SHA256 verification
+Terse. Direct. Code-focused.
 
-# PROJECT CONTEXT
+Example: `Fixed parser.js:23` not "I've identified and resolved the memory leak issue..."
 
-**Project Path**: {{PROJECT_PATH}}
-**Runtime**: {{RUNTIME}}{{#HAS_FRAMEWORK}}
-**Framework**: {{FRAMEWORK}}{{/HAS_FRAMEWORK}}{{#HAS_PACKAGE_MANAGER}}
-**Package Manager**: {{PACKAGE_MANAGER}}{{/HAS_PACKAGE_MANAGER}}{{#HAS_GIT}}
-**Version Control**: {{VERSION_CONTROL}}{{/HAS_GIT}}{{#PURPOSE}}
-**Purpose**: {{PURPOSE}}{{/PURPOSE}}
+## Priorities
 
-# OUTPUT STYLE
-
-Terse mode active. Code first, explanations only if asked.
-
-Good: `Fixed memory leak in parser.js:23`
-Bad: Long explanations
+1. Working code over perfect code
+2. Simple over clever
+3. Delete over maintain
+4. Ship over discuss
