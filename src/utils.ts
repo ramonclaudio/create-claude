@@ -150,18 +150,26 @@ export async function safeExec(command: string, cwd: string): Promise<string | n
 
 export class ProgressIndicator {
   private message = '';
+  private isStarted = false;
 
   start(message: string): void {
     this.message = message;
-    console.log(`${message}...`);
+    this.isStarted = true;
+    // Don't print anything on start, just store the message
   }
 
   stop(completionMessage?: string): void {
-    console.log(`✓ ${completionMessage || this.message}`);
+    if (this.isStarted) {
+      console.log(`✓ ${completionMessage || this.message}`);
+      this.isStarted = false;
+    }
   }
 
   fail(errorMessage: string): void {
-    console.log(`✗ ${errorMessage}`);
+    if (this.isStarted) {
+      console.log(`✗ ${errorMessage}`);
+      this.isStarted = false;
+    }
   }
 
   cleanup(): void {

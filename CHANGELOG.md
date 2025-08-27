@@ -5,6 +5,28 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.5] - 2025-08-27
+
+### Changed
+
+- **BREAKING**: Removed interactive prompts for ultra-fast setup
+- **BREAKING**: Removed verbose and silent flags - simplified CLI interface  
+- **BREAKING**: Removed legacy `--yes` flag - no longer needed
+- Achieved zero-config setup experience
+- Simplified CLI to only essential flags: `--help`, `--version`, `--dry-run`
+- Updated package description from verbose technical to "One command. Zero config. Better Claude Code setup..."
+- Enhanced README with clear package manager support (npm/pnpm/bun/yarn)
+- Added 9 strategic keywords for better NPM discoverability: scaffolding, ai, productivity, automation, agents, hooks, config, zero-config, developer-tools
+- Improved help text to reflect streamlined functionality
+
+### Technical
+
+- Cleaned progress indicators for silent work phase
+- Removed all legacy code and unused functionality
+- Streamlined argument validation and processing
+- Always-silent logging for clean output
+- Simplified TypeScript interfaces and removed unused options
+
 ## [0.1.4] - 2025-08-27
 
 ### Added
