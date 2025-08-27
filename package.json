@@ -1,7 +1,7 @@
 {
   "name": "create-claude",
-  "version": "0.1.4",
-  "description": "Enhanced Claude Code configuration with agents, hooks, commands, output styles, automation tools and a project-tailored CLAUDE.md.",
+  "version": "0.1.5",
+  "description": "One command. Zero config. Better Claude Code setup with agents, hooks, commands, and smart permissions.",
   "type": "module",
   "sideEffects": false,
   "main": "./dist/index.js",
@@ -48,7 +48,16 @@
     "claude-code",
     "cli",
     "setup",
-    "template"
+    "template",
+    "scaffolding",
+    "ai",
+    "productivity",
+    "automation",
+    "agents",
+    "hooks",
+    "config",
+    "zero-config",
+    "developer-tools"
   ],
   "author": "RMNCLDYO <hi@rmncldyo.com>",
   "license": "MIT",
