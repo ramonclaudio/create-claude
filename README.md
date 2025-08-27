@@ -1,168 +1,110 @@
 # create-claude
 
-> Installs production-ready Claude Code agents, hooks, commands, and smart permissions that eliminate interruptions, enforce code quality, and maintain safety through intelligent boundaries, allowing you to iterate fast and ship faster.
+> Better Claude Code setup. Agents, hooks, commands, smart permissions. Zero config.
 
 [![npm version](https://img.shields.io/npm/v/create-claude.svg)](https://www.npmjs.com/package/create-claude)
 [![node-current](https://img.shields.io/node/v/create-claude)](https://www.npmjs.com/package/create-claude)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-## What it is
+## Quick Setup
 
-An enhanced alternative to Claude Code's `/init` command that adds production-ready agents, hooks, commands, and automation tools to help developers work more efficiently.
-
-## Quick Start
+**One command. Zero config. Better Claude Code.**
 
 ```bash
-npm create claude@latest
+npm create claude        # or bun/pnpm/yarn
 ```
 
-30 seconds. Zero config. Immediate productivity boost.
-
-## Installation
+*No downloads, no dependencies, no permanent install - just copies config files to your project.*
 
 ```bash
-# Recommended
-npm create claude@latest
+$ npm create claude
+create-claude helps you set up Claude Code with production-ready 
+configuration. Press ^C anytime to quit.
 
-# Alternative methods
-npx create-claude@latest
-npm init claude
+Done! Claude Code configuration saved in current directory.
+ + .claude/settings.local.json
+ + .claude/agents/pre-commit.md
+ + .claude/agents/refactor.md
+ + .claude/hooks/format.cjs
+ + .claude/hooks/safety.cjs
+ + .claude/commands/validate.md
+ + .claude/commands/test.md
+ + .claude/scripts/statusline.cjs
+ + .claude/output-styles/terse.md
+ + CLAUDE.md
 
-# Global install (not recommended)
-npm install -g create-claude
+To get started:
+  Open Claude Code and enjoy the enhanced experience!
 ```
 
-## Why use this
+---
 
-Claude Code's built-in `/init` provides basic configuration. This package extends that foundation with:
+## More Options
 
-- **Pre-configured agents** for automated refactoring and pre-commit validation
-- **Smart hooks** that auto-detect and run your existing formatters and linters
-- **Custom commands** for common workflows like `/validate` and `/test`
-- **Enhanced statusline** with Git and runtime information
-- **Permission presets** that reduce interruptions while maintaining safety
-
-The goal: help developers maintain flow state by automating repetitive tasks and reducing context switches.
-
-## What you get
-
-```
-CLAUDE.md                    # Project context and coding standards
-.claude/
-├── settings.local.json      # Permission configuration with smart defaults
-├── agents/                  
-│   ├── pre-commit.md        # Enforces quality before commits
-│   └── refactor.md          # Auto-simplifies complex code
-├── hooks/                   
-│   ├── format.cjs           # Auto-detects prettier/biome/ruff/black
-│   └── safety.cjs           # Pattern-based command validation
-├── commands/                
-│   ├── validate.md          # Run all quality checks
-│   └── test.md              # Discover and run test suites
-├── scripts/                 
-│   ├── statusline.sh        # Project-aware status display
-│   ├── statusline-detect.sh # Framework/runtime detection
-│   └── statusline-git.sh    # Enhanced Git information
-└── output-styles/           
-    └── terse.md             # Concise response format
-
-```
-
-## Key features
-
-### Intelligent permissions
-
-Reduces interruptions by pre-configuring common patterns:
-
-```json
-{
-  "permissions": {
-    "bypassPermissions": true,                               // Work uninterrupted
-    "allowed": ["Read", "Write", "Edit", "..."],             // Allow all safe operations
-    "blocked": ["Bash(*sudo*)", "Bash(*rm -rf /*)", "..."], // Block dangerous patterns
-    "ask": ["Bash(*rm*)", "..."]                            // Prompt for destructive ops
-  }
-}
-```
-
-### Auto-detection
-
-Automatically discovers and uses your existing tools:
-- Formatters: Prettier, Biome, Ruff, Black
-- Package managers: npm, yarn, pnpm, bun
-- Test runners: Jest, Vitest, Pytest, Go test
-- Runtime: Node.js, Python, Go, Rust
-
-and more...
-
-### Atomic operations
-
-All file operations include automatic backup to `.create-claude-backup-*` with timestamp-based versioning.
-
-### Custom statusline
-
-Displays relevant project information in Claude Code:
-- Project Name (non-git, git, or github)
-- Current Git branch and status
-- Active runtime and framework
-- Package manager in use
-
-## How it works
-
-1. **Extends Claude Code's native configuration** - Builds on the [official memory hierarchy](https://docs.anthropic.com/en/docs/claude-code/manage-memory)
-2. **Project-first approach** - Local settings override global, each project stays unique
-3. **Pattern matching** - Uses Claude's pattern system for intelligent permission handling
-4. **Zero dependencies** - Pure configuration files, no npm packages installed
-
-## Configuration
-
-All aspects are customizable through standard Claude Code configuration files:
-
-### Adjust permissions
-Edit `.claude/settings.local.json` to modify permission rules
-
-### Customize agents
-Modify markdown files in `.claude/agents/` to change agent behavior
-
-### Add commands
-Create new markdown files in `.claude/commands/` for custom workflows
-
-### Modify hooks
-Update JavaScript files in `.claude/hooks/` to change automation behavior
-
-## Requirements
-
-- Node.js 18+
-- [Claude Code](https://claude.ai/code)
-
-## CLI Options
+**Works with any package manager:**
 
 ```bash
-npm create claude@latest --dry-run  # Preview changes without applying
-npm create claude@latest --help      # Display available options
-```
+# npm
+npm create claude my-project
+npx create-claude my-project
 
-## Uninstall
+# pnpm
+pnpm create claude my-project
+pnpm dlx create-claude my-project
+
+# bun
+bun create claude my-project
+bunx create-claude my-project
+
+# yarn
+yarn create claude my-project
+yarn dlx create-claude my-project
+```
 
 ```bash
-rm -rf .claude CLAUDE.md
+npm create claude --dry-run     # Preview without installing
+npm create claude --help        # Show all options
 ```
 
-No dependencies or build artifacts to clean up.
+## Use as Library
 
-## Contributing
+```bash
+npm i create-claude
+```
 
-This is open source software. Contributions are welcome:
+```typescript
+import { init } from 'create-claude';
 
-- Report issues or request features via [GitHub Issues](https://github.com/RMNCLDYO/create-claude/issues)
-- Submit improvements via pull requests
-- Share your custom agents and commands with the community
+await init('./my-project');
+```
 
-## Support
+## Features
 
-- [Report bugs](https://github.com/RMNCLDYO/create-claude/issues)
-- [Request features](https://github.com/RMNCLDYO/create-claude/issues)
-- [Ask questions](https://github.com/RMNCLDYO/create-claude/discussions)
+- Agents for refactoring and pre-commit validation
+- Hooks that find your formatters/linters
+- Commands like `/validate` and `/test`
+- Better statusline with Git info
+- Permissions that don't bug you
+
+## That's it
+
+Run the command. Get back to work.
+
+---
+
+## FAQ
+
+**What does this do?** Adds config files to make Claude Code work better. No code changes.
+
+**Is it safe?** Handles file operations carefully with SHA256 checksums and timestamped backups.
+
+**How do I undo it?** `rm -rf .claude CLAUDE.md`
+
+**Do I need to install anything?** Just Node.js 18+ and [Claude Code](https://claude.ai/code)
+
+## Issues
+
+[GitHub Issues](https://github.com/RMNCLDYO/create-claude/issues)
 
 ## Links
 
