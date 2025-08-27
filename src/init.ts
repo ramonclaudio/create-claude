@@ -3,20 +3,20 @@ import { copyClaudeDirectory, copyAdditionalFiles } from './files.js';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { promises as fs } from 'node:fs';
-import { exists, ProgressIndicator } from './utils.js';
+import { exists } from './utils.js';
 import { ErrorCode, type TemplateVariables } from './types.js';
 import { logger, LogLevel, configureLogger } from './logger.js';
 
 export interface InitOptions {
   dryRun?: boolean;
-  verbose?: boolean;
-  silent?: boolean;
 }
 
 export interface InitResult {
   success: boolean;
   filesCreated: number;
   message: string;
+  createdFiles?: string[];
+  projectName?: string;
   dryRun?: boolean;
   errorCode?: ErrorCode;
 }
@@ -201,52 +201,33 @@ export async function init(
   projectPath: string,
   options: InitOptions = {}
 ): Promise<InitResult> {
-  const { dryRun = false, verbose = false, silent = false } = options;
+  const { dryRun = false } = options;
   
   configureLogger({
-    level: verbose ? LogLevel.DEBUG : LogLevel.INFO,
-    silent
+    level: LogLevel.INFO,
+    silent: true // Always silent for clean output
   });
   
-  const progress = silent ? null : new ProgressIndicator();
-  
   try {
-    if (!dryRun && !silent) {
-      console.log('⚠️  DISCLAIMER: Always backup your project first. Use at your own risk.');
-    }
-    
-    progress?.start('Validating skeleton files');
+    // Do all the work silently like bun init
     await validateSkelFiles();
-    
-    progress?.stop('Validating target directory');
     await validateTargetDirectory(projectPath);
     
-    const existingFiles = await checkExistingFiles(projectPath);
-    if (existingFiles.length > 0 && !silent) {
-      progress?.stop(`Will backup: ${existingFiles.join(', ')}`);
-    }
-    
-    progress?.stop('Detecting project context');
+    await checkExistingFiles(projectPath);
     const context = await detectProjectContext(projectPath);
-    
     const templateVariables = await getTemplateVariables(context, projectPath);
     
     if (dryRun) {
-      progress?.stop('Analyzing files');
       return await performDryRun(projectPath, context);
     }
     
-    progress?.stop('Installing files');
     const { filesCreated, backupDir } = await performFileCopy(projectPath, templateVariables);
     
     if (backupDir) {
       logger.info('Created backup', { dir: backupDir });
     }
     
-    progress?.stop('Validating installation');
     await validateInstallation(projectPath);
-    
-    progress?.stop(`✓ Initialized ${filesCreated} files for ${context.projectName}`);
     
     return {
       success: true,
@@ -258,7 +239,7 @@ export async function init(
     const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
     const errorCode = error instanceof InitError ? error.code : ErrorCode.UNKNOWN_ERROR;
     
-    progress?.fail(errorMessage.split('\n')[0] || 'Unknown error');
+    // Silent error handling like bun init
     logger.error('Initialization failed', { error: errorMessage, code: errorCode });
     
     return {
