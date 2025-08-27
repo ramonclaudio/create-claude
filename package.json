@@ -1,7 +1,7 @@
 {
   "name": "create-claude",
-  "version": "0.1.3",
-  "description": "Production-ready Claude Code setup with bulletproof file safety. One command installs agents, hooks, commands and templates with atomic backups.",
+  "version": "0.1.4",
+  "description": "Enhanced Claude Code configuration with agents, hooks, commands, output styles, automation tools and a project-tailored CLAUDE.md.",
   "type": "module",
   "sideEffects": false,
   "main": "./dist/index.js",
@@ -26,18 +26,22 @@
     "CHANGELOG.md"
   ],
   "scripts": {
-    "build": "node -e \"require('fs').rmSync('dist',{recursive:true,force:true})\" && tsc",
+    "build": "npm run clean:dist && tsc",
+    "build:watch": "tsc --watch",
     "dev": "npm run build && node dist/cli.js",
+    "start": "node dist/cli.js",
     "test": "npm run build && npm run test:integration",
     "test:integration": "node test/integration.cjs",
+    "clean": "node -e \"const fs=require('fs'); ['dist','node_modules','package-lock.json'].forEach(d=>fs.rmSync(d,{recursive:true,force:true}));\"",
+    "clean:dist": "node -e \"require('fs').rmSync('dist',{recursive:true,force:true})\"",
+    "validate": "npm run typecheck && npm run lint",
     "typecheck": "tsc --noEmit",
     "lint": "tsc --noEmit --strict",
-    "clean": "node -e \"require('fs').rmSync('dist',{recursive:true,force:true})\"",
-    "validate": "npm run typecheck && npm run lint",
+    "releaseCheck": "echo 'Running release validation (dry-run)...' && npm run clean && npm install && npm run validate && npm run build && npm test && echo 'All release checks passed! Ready for version bump.'",
     "prepack": "npm run validate && npm run test",
     "prepublishOnly": "npm run validate && npm run test",
     "postpack": "echo 'Package created successfully'",
-    "version": "npm run build && git add -A"
+    "version": "echo 'Starting version preparation...' && npm run clean && npm install && npm run validate && npm run build && npm test && echo '⚠️  REMINDER: Update CHANGELOG.md with changes for this version!' && git add -A && echo 'Version preparation complete - files staged for commit'"
   },
   "keywords": [
     "claude",
