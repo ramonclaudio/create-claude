@@ -3,13 +3,13 @@
 > Better Claude Code setup. Agents, hooks, commands, smart permissions. Zero config.
 
 [![npm version](https://img.shields.io/npm/v/create-claude.svg)](https://www.npmjs.com/package/create-claude)
-[![npm downloads](https://img.shields.io/npm/dm/create-claude.svg)](https://www.npmjs.com/package/create-claude)
+[![npm downloads](https://img.shields.io/npm/dm/create-claude.svg?color=purple)](https://www.npmjs.com/package/create-claude)
 [![node-current](https://img.shields.io/node/v/create-claude)](https://www.npmjs.com/package/create-claude)
+[![OpenSSF Best Practices](https://www.bestpractices.dev/projects/11141/badge)](https://www.bestpractices.dev/projects/11141)
 [![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/RMNCLDYO/create-claude/badge)](https://scorecard.dev/viewer/?uri=github.com/RMNCLDYO/create-claude)
 [![Security Audit](https://github.com/RMNCLDYO/create-claude/workflows/Security%20Scan/badge.svg)](https://github.com/RMNCLDYO/create-claude/actions/workflows/security.yml)
 [![NPM Audit](https://github.com/RMNCLDYO/create-claude/workflows/NPM%20Audit%20Signatures/badge.svg)](https://github.com/RMNCLDYO/create-claude/actions/workflows/audit-signatures.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Funding](https://img.shields.io/github/sponsors/RMNCLDYO)](https://github.com/sponsors/RMNCLDYO)
 
 ## Quick Setup
 
