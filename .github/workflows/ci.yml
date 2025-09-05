@@ -89,9 +89,7 @@ jobs:
 
     - name: Install fast-check for fuzzing
       run: |
-        echo '{"name":"fuzz-test","devDependencies":{"fast-check":"3.22.0","jest":"29.7.0"}}' > fuzz-package.json
-        npm install --package-lock-only --package-json fuzz-package.json
-        npm ci --package-json fuzz-package.json
+        npm install fast-check@3.22.0 jest@29.7.0
 
     - name: Run fuzz tests
       run: |
