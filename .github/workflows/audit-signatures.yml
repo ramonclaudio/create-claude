@@ -43,7 +43,11 @@ jobs:
 
     - name: Check for vulnerabilities
       run: |
-        if npm audit --json | jq '.vulnerabilities | length > 0'; then
-          echo "::error::Security vulnerabilities found in dependencies"
+        AUDIT_RESULT=$(npm audit --json)
+        VULN_COUNT=$(echo "$AUDIT_RESULT" | jq '.vulnerabilities | length')
+        if [ "$VULN_COUNT" -gt 0 ]; then
+          echo "::error::Security vulnerabilities found in dependencies ($VULN_COUNT vulnerabilities)"
           exit 1
+        else
+          echo "No security vulnerabilities found"
         fi
