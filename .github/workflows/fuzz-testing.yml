@@ -35,8 +35,11 @@ jobs:
     - name: Install dependencies
       run: npm ci
 
-    - name: Install fast-check
-      run: npm install --save-dev fast-check@3.22.0
+    - name: Install fast-check with lock file
+      run: |
+        echo '{"name":"fuzz-test","devDependencies":{"fast-check":"3.22.0"}}' > package.json
+        npm install --package-lock-only
+        npm ci
 
     - name: Create fuzz test
       run: |
