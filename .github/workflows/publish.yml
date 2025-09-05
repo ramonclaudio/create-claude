@@ -8,6 +8,7 @@ on:
 permissions:
   id-token: write
   contents: read
+  attestations: write
 
 jobs:
   publish:
@@ -22,9 +23,25 @@ jobs:
 
       - name: Update npm
         run: npm install -g npm@latest
+      
       - run: npm ci
+      
+      - name: Run security audit
+        run: npm audit --audit-level=moderate
+      
+      - name: Run audit signatures
+        run: npm audit signatures
+      
       - run: npm run build --if-present
       - run: npm test
-      - run: npm publish
+      
+      - name: Publish with provenance
+        run: npm publish --provenance --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          
+      - name: Generate package attestation
+        uses: actions/attest-build-provenance@v1
+        if: success()
+        with:
+          subject-path: '*.tgz'

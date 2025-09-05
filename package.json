@@ -1,6 +1,6 @@
 {
   "name": "create-claude",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "description": "One command. Zero config. Better Claude Code setup with agents, hooks, commands, and smart permissions.",
   "type": "module",
   "sideEffects": false,
@@ -23,8 +23,18 @@
     "README.md",
     "LICENSE",
     "DISCLAIMER.md",
-    "CHANGELOG.md"
+    "CHANGELOG.md",
+    "SECURITY.md"
   ],
+  "funding": {
+    "type": "github",
+    "url": "https://github.com/sponsors/RMNCLDYO"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true,
+    "registry": "https://registry.npmjs.org/"
+  },
   "scripts": {
     "build": "npm run clean:dist && tsc",
     "build:watch": "tsc --watch",
@@ -83,9 +93,6 @@
     "arm64"
   ],
   "preferGlobal": false,
-  "publishConfig": {
-    "access": "public"
-  },
   "devDependencies": {
     "@types/node": "^20.19.11",
     "typescript": "^5.3.0"

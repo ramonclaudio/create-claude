@@ -5,6 +5,29 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.7] - 2025-09-05
+
+### Added
+
+- SECURITY.md for vulnerability reporting with safe harbor policy
+- CITATION.cff for academic citation support and Zenodo integration
+- SUPPORT.md for community support guidelines and response times
+- GitHub Sponsors funding configuration
+- Comprehensive GitHub issue templates (bug reports, feature requests)
+- Modern pull request template
+- Dependabot configuration for automated dependency updates
+- Security scanning workflow with CodeQL analysis
+- OpenSSF Scorecard integration for security health metrics
+- NPM audit signatures verification workflow
+- Provenance attestation in publish workflow with OIDC trusted publishing
+- Comprehensive README badges for security, quality, and funding
+
+### Enhanced
+
+- Package.json with funding field and provenance configuration
+- Publish workflow with npm provenance and package attestation
+- Repository discoverability with comprehensive topic coverage
+
 ## [0.1.6] - 2025-09-05
 
 ### Enhanced
@@ -123,6 +146,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Comprehensive test suite
 - TypeScript support with strict configuration
 
+[0.1.7]: https://github.com/RMNCLDYO/create-claude/compare/v0.1.6...v0.1.7
 [0.1.6]: https://github.com/RMNCLDYO/create-claude/compare/v0.1.5...v0.1.6
 [0.1.5]: https://github.com/RMNCLDYO/create-claude/compare/v0.1.4...v0.1.5
 [0.1.4]: https://github.com/RMNCLDYO/create-claude/compare/v0.1.3...v0.1.4

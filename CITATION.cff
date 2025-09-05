@@ -1,0 +1,27 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it using the metadata from this file."
+type: software
+title: "create-claude"
+abstract: "One command. Zero config. Better Claude Code setup with agents, hooks, commands, and smart permissions."
+authors:
+  - given-names: "RMNCLDYO"
+    email: "hi@rmncldyo.com"
+    orcid: "https://orcid.org/0000-0000-0000-0000"
+repository-code: "https://github.com/RMNCLDYO/create-claude"
+url: "https://github.com/RMNCLDYO/create-claude"
+repository-artifact: "https://www.npmjs.com/package/create-claude"
+keywords:
+  - "claude"
+  - "claude-code" 
+  - "cli"
+  - "scaffolding"
+  - "npm"
+  - "typescript"
+  - "automation"
+  - "developer-tools"
+  - "zero-config"
+  - "productivity"
+license: MIT
+license-url: "https://github.com/RMNCLDYO/create-claude/blob/main/LICENSE"
+version: "0.1.7"
+date-released: "2025-09-05"

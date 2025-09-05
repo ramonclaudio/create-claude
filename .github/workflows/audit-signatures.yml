@@ -1,0 +1,49 @@
+name: NPM Audit Signatures
+
+on:
+  schedule:
+    - cron: '0 6 * * *'  # Daily at 6 AM UTC
+  push:
+    branches: [ "main" ]
+    paths:
+      - 'package*.json'
+  pull_request:
+    branches: [ "main" ]
+    paths:
+      - 'package*.json'
+
+permissions:
+  contents: read
+  issues: write
+  pull-requests: write
+
+jobs:
+  audit-signatures:
+    name: Audit Package Signatures
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Run npm audit
+      run: npm audit --audit-level=moderate
+
+    - name: Verify package signatures
+      run: npm audit signatures
+
+    - name: Check for vulnerabilities
+      run: |
+        if npm audit --json | jq '.vulnerabilities | length > 0'; then
+          echo "::error::Security vulnerabilities found in dependencies"
+          exit 1
+        fi
