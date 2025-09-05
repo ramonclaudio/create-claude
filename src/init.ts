@@ -205,11 +205,10 @@ export async function init(
   
   configureLogger({
     level: LogLevel.INFO,
-    silent: true // Always silent for clean output
+    silent: true
   });
   
   try {
-    // Do all the work silently like bun init
     await validateSkelFiles();
     await validateTargetDirectory(projectPath);
     
@@ -239,7 +238,6 @@ export async function init(
     const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
     const errorCode = error instanceof InitError ? error.code : ErrorCode.UNKNOWN_ERROR;
     
-    // Silent error handling like bun init
     logger.error('Initialization failed', { error: errorMessage, code: errorCode });
     
     return {

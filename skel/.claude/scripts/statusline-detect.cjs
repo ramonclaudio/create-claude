@@ -46,7 +46,6 @@ function detectFramework(cwd) {
       if (deps[dep]) return framework;
     }
   } catch {
-    // Ignore errors
   }
   
   return null;
@@ -65,7 +64,6 @@ function detectRuntime(cwd) {
       }
     }
   } catch {
-    // Ignore errors
   }
   
   return DEFAULT_RUNTIME;

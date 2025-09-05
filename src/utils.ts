@@ -155,7 +155,6 @@ export class ProgressIndicator {
   start(message: string): void {
     this.message = message;
     this.isStarted = true;
-    // Don't print anything on start, just store the message
   }
 
   stop(completionMessage?: string): void {
@@ -173,6 +172,6 @@ export class ProgressIndicator {
   }
 
   cleanup(): void {
-    // Ignore cleanup
+    // No-op for now, but could clear console lines if needed
   }
 }

@@ -16,7 +16,6 @@ function validateArgs(args: string[]): { dryRun: boolean; directory: string | un
       }
       if (arg === '--dry-run') dryRun = true;
     } else if (arg && !directory) {
-      // First non-flag argument is the directory
       directory = arg;
     }
   }
@@ -31,17 +30,13 @@ function showVersion(): void {
   console.log(packageJson.version);
 }
 
-// No prompts needed - just do the work
 
 async function runInit(options: { dryRun?: boolean; directory?: string | undefined } = {}): Promise<number> {
-  // Determine target directory
   const targetDir = options.directory ? resolve(options.directory) : process.cwd();
   
-  // Show intro message like bun init
   console.log('create-claude helps you set up Claude Code with production-ready');
   console.log('configuration. Press ^C anytime to quit.');
   
-  // Create directory if it doesn't exist and we specified one
   if (options.directory) {
     const fs = await import('node:fs/promises');
     try {
@@ -51,7 +46,6 @@ async function runInit(options: { dryRun?: boolean; directory?: string | undefin
       return 1;
     }
   }
-  // No prompts needed - just do the work like the best CLI tools
   
   const result = await init(targetDir, options);
   
@@ -61,7 +55,6 @@ async function runInit(options: { dryRun?: boolean; directory?: string | undefin
   }
   
   if (!options.dryRun) {
-    // Show final output like bun init
     console.log('\nDone! Claude Code configuration saved in current directory.');
     const createdFiles = [
       ' + .claude/settings.local.json',

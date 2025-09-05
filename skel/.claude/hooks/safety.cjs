@@ -61,7 +61,7 @@ function matchesPatterns(toolCall, patterns) {
     if (pattern === '*') return true;
     if (pattern === tool_name) return true;
     
-    if (pattern.includes('*') && pattern.includes('(') && pattern.includes(')')) {
+    if (pattern.includes('(') && pattern.includes(')')) {
       const parenIndex = pattern.indexOf('(');
       const closeParenIndex = pattern.lastIndexOf(')');
       
@@ -73,9 +73,16 @@ function matchesPatterns(toolCall, patterns) {
       if (toolPart === tool_name || toolPart === '*') {
         if (!argPart) return true;
         
-        const escapedArgPattern = argPart
-          .replace(/[.+?^${}()|[\]\\]/g, '\\$&')
-          .replace(/\\\*/g, '.*');
+        let escapedArgPattern;
+        if (argPart.startsWith(':*') || argPart.endsWith(':*')) {
+          escapedArgPattern = argPart
+            .replace(/[.+?^${}()|[\]\\]/g, '\\$&')
+            .replace(/:\\\*/g, '.*');
+        } else {
+          escapedArgPattern = argPart
+            .replace(/[.+?^${}()|[\]\\]/g, '\\$&')
+            .replace(/\\\*/g, '.*');
+        }
         
         const argToCheck = getArgForTool(tool_name, tool_input);
         
@@ -116,15 +123,96 @@ function getArgForTool(toolName, toolInput) {
 
 const permissions = loadPermissions();
 
+function additionalSafetyChecks(toolCall) {
+  const { tool_name, tool_input } = toolCall;
+  
+  if (tool_name === 'Bash' && tool_input?.command) {
+    const cmd = tool_input.command.toLowerCase();
+    const dangerousPatterns = [
+      /rm\s+(-rf?|--recursive)/,
+      /sudo\s+/,
+      /\bsu\s+/,
+      /eval\s*[\(\$`]/,
+      /\|\s*sh\b/,
+      /\|\s*bash\b/,
+      /curl.*\|.*sh/,
+      /wget.*\|.*sh/,
+      /chmod.*777/,
+      /dd\s+.*of=/,
+      /mkfs\./,
+      /fdisk/
+    ];
+    
+    for (const pattern of dangerousPatterns) {
+      if (pattern.test(cmd)) {
+        const response = {
+          hookSpecificOutput: {
+            hookEventName: "PreToolUse",
+            permissionDecision: "deny", 
+            permissionDecisionReason: `Dangerous command pattern detected - ${cmd}`
+          }
+        };
+        console.log(JSON.stringify(response));
+        process.exit(0);
+      }
+    }
+  }
+  
+  if (['Read', 'Edit', 'Write'].includes(tool_name) && tool_input?.file_path) {
+    const path = tool_input.file_path.toLowerCase();
+    const sensitivePatterns = [
+      /\/etc\/passwd/,
+      /\/etc\/shadow/,
+      /\.ssh\/id_/,
+      /\.aws\/credentials/,
+      /\.env$/,
+      /\.env\./,
+      /secrets/,
+      /\.pem$/,
+      /\.key$/,
+      /credentials\.json/
+    ];
+    
+    for (const pattern of sensitivePatterns) {
+      if (pattern.test(path)) {
+        const response = {
+          hookSpecificOutput: {
+            hookEventName: "PreToolUse",
+            permissionDecision: "deny",
+            permissionDecisionReason: `Attempted access to sensitive file - ${tool_input.file_path}`
+          }
+        };
+        console.log(JSON.stringify(response));
+        process.exit(0);
+      }
+    }
+  }
+}
+
+additionalSafetyChecks(toolCall);
+
 if (matchesPatterns(toolCall, permissions.deny)) {
-  console.error(`BLOCKED: Operation denied by settings - ${tool_name}${tool_input ? ` ${getArgForTool(tool_name, tool_input)}` : ''}`);
-  process.exit(1);
+  const response = {
+    hookSpecificOutput: {
+      hookEventName: "PreToolUse",
+      permissionDecision: "deny",
+      permissionDecisionReason: `Operation denied by settings - ${tool_name}${tool_input ? ` ${getArgForTool(tool_name, tool_input)}` : ''}`
+    }
+  };
+  console.log(JSON.stringify(response));
+  process.exit(0);
 }
 
 if (matchesPatterns(toolCall, permissions.ask)) {
-  console.error(`CONFIRMATION REQUIRED: ${tool_name}${tool_input ? ` ${getArgForTool(tool_name, tool_input)}` : ''}`);
-  console.error('This operation requires user confirmation. Add to "allow" list in settings.local.json to auto-approve.');
-  process.exit(1);
+  const response = {
+    hookSpecificOutput: {
+      hookEventName: "PreToolUse", 
+      permissionDecision: "ask",
+      permissionDecisionReason: `${tool_name}${tool_input ? ` ${getArgForTool(tool_name, tool_input)}` : ''} - Add to "allow" list in settings.local.json to auto-approve.`
+    }
+  };
+  console.log(JSON.stringify(response));
+  process.exit(0);
 }
 
 if (matchesPatterns(toolCall, permissions.allow)) {
