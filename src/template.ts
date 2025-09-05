@@ -41,7 +41,7 @@ export function renderTemplate(
   let iterations = 0;
   
   const processConditionals = (text: string): string => {
-    return text.replace(/\{\{#(\w+)\}\}([\s\S]*?)\{\{\/\1\}\}/g, (_match, key, content) => {
+    return text.replace(/\{\{#(\w+)\}\}((?:(?!\{\{\/\1\}\}).)*?)\{\{\/\1\}\}/gs, (_match, key, content) => {
       if (!ALLOWED_TEMPLATE_KEYS.has(key)) return '';
       
       const value = variables[key as keyof TemplateVariables];

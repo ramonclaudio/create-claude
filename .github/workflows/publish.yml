@@ -22,7 +22,7 @@ jobs:
           registry-url: 'https://registry.npmjs.org'
 
       - name: Update npm
-        run: npm install -g npm@latest
+        run: npm install -g npm@10.9.0
       
       - run: npm ci
       

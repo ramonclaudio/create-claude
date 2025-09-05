@@ -144,16 +144,21 @@ function formatVersionControl(
   if (!hasGit) return 'No version control detected';
   
   if (gitRemoteUrl) {
-    if (gitRemoteUrl.includes('github.com')) {
-      return gitRemoteUrl.replace(/\.git$/, '');
+    try {
+      const url = new URL(gitRemoteUrl.replace(/^git@/, 'https://').replace(/:/g, '/'));
+      if (url.hostname === 'github.com' || url.hostname === 'www.github.com') {
+        return `https://github.com${url.pathname}`.replace(/\.git$/, '');
+      }
+      if (url.hostname === 'gitlab.com' || url.hostname === 'www.gitlab.com') {
+        return `https://gitlab.com${url.pathname}`.replace(/\.git$/, '');
+      }
+      if (url.hostname === 'bitbucket.org' || url.hostname === 'www.bitbucket.org') {
+        return `https://bitbucket.org${url.pathname}`.replace(/\.git$/, '');
+      }
+      return gitRemoteUrl;
+    } catch (error) {
+      return gitRemoteUrl;
     }
-    if (gitRemoteUrl.includes('gitlab.com')) {
-      return gitRemoteUrl.replace(/\.git$/, '');
-    }
-    if (gitRemoteUrl.includes('bitbucket.org')) {
-      return gitRemoteUrl.replace(/\.git$/, '');
-    }
-    return gitRemoteUrl;
   }
   
   return projectPath ? `Local Git repository: ${projectPath}` : 'Local Git repository';
