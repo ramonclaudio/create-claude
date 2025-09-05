@@ -1,24 +1,68 @@
-name: Fuzz Testing
+name: CI
 
 on:
-  schedule:
-    - cron: '0 2 * * *'  # Daily at 2 AM UTC
   push:
     branches: [ "main" ]
-    paths:
-      - 'src/**'
-      - 'test/**'
   pull_request:
     branches: [ "main" ]
-    paths:
-      - 'src/**'
-      - 'test/**'
+  workflow_dispatch:
 
 permissions:
   contents: read
+  security-events: write
 
 jobs:
-  fuzz-test:
+  test:
+    name: Test Suite
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@eef61447b9ff4aafe5dcd4e0bbf5d482be7e7871 # v4.2.1
+
+    - name: Setup Node.js
+      uses: actions/setup-node@0a44ba7841725637a19e28fa30b79a866c81b0a6 # v4.0.4
+      with:
+        node-version: '18'
+        cache: 'npm'
+
+    - name: Enable corepack and set npm version
+      run: |
+        corepack enable
+        corepack prepare npm@10.9.0 --activate
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Run type check
+      run: npm run typecheck
+
+    - name: Run linting
+      run: npm run lint
+
+    - name: Run tests
+      run: npm test
+
+  codeql:
+    name: CodeQL Analysis
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@eef61447b9ff4aafe5dcd4e0bbf5d482be7e7871 # v4.2.1
+
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@c36620d31ac7c881962c3d9dd939c40ec9434f2b # v3.26.12
+      with:
+        languages: javascript-typescript
+
+    - name: Autobuild
+      uses: github/codeql-action/autobuild@c36620d31ac7c881962c3d9dd939c40ec9434f2b # v3.26.12
+
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@c36620d31ac7c881962c3d9dd939c40ec9434f2b # v3.26.12
+
+  fuzz:
     name: Fuzz Testing
     runs-on: ubuntu-latest
     
@@ -40,29 +84,20 @@ jobs:
     - name: Install dependencies
       run: npm ci
 
-    - name: Install fast-check with lock file
-      run: |
-        echo '{"name":"fuzz-test","devDependencies":{"fast-check":"3.22.0"}}' > package.json
-        npm install --package-lock-only
-        npm ci
+    - name: Build project
+      run: npm run build
 
-    - name: Create fuzz test
+    - name: Install fast-check for fuzzing
       run: |
-        cat << 'EOF' > test/fuzz.test.js
+        echo '{"name":"fuzz-test","devDependencies":{"fast-check":"3.22.0","jest":"29.7.0"}}' > fuzz-package.json
+        npm install --package-lock-only --package-json fuzz-package.json
+        npm ci --package-json fuzz-package.json
+
+    - name: Run fuzz tests
+      run: |
+        cat << 'EOF' > fuzz.test.js
         const fc = require('fast-check');
-        const fs = require('fs');
-        const path = require('path');
-
-        // Import our utilities for fuzzing
-        let utils;
-        try {
-          utils = require('../dist/utils.js');
-        } catch (e) {
-          // Build first if dist doesn't exist
-          const { execSync } = require('child_process');
-          execSync('npm run build', { stdio: 'inherit' });
-          utils = require('../dist/utils.js');
-        }
+        const utils = require('./dist/utils.js');
 
         describe('Fuzz Testing', () => {
           test('detectPackageManager handles arbitrary strings', () => {
@@ -72,7 +107,6 @@ jobs:
                 expect(typeof result).toBe('string');
                 expect(['npm', 'yarn', 'pnpm', 'bun'].includes(result)).toBe(true);
               } catch (error) {
-                // Expected to handle gracefully
                 expect(error).toBeInstanceOf(Error);
               }
             }));
@@ -84,7 +118,6 @@ jobs:
                 const result = utils.validateTemplateVariables(input, []);
                 expect(typeof result).toBe('object');
               } catch (error) {
-                // Expected to handle gracefully
                 expect(error).toBeInstanceOf(Error);
               }
             }));
@@ -96,16 +129,10 @@ jobs:
                 const result = utils.renderTemplate(template, vars);
                 expect(typeof result).toBe('string');
               } catch (error) {
-                // Expected to handle gracefully for malformed templates
                 expect(error).toBeInstanceOf(Error);
               }
             }));
           });
         });
         EOF
-
-    - name: Run fuzz tests
-      run: npm test test/fuzz.test.js || true
-
-    - name: Clean up
-      run: rm -f test/fuzz.test.js && npm uninstall fast-check
+        npx jest fuzz.test.js --testTimeout=30000
