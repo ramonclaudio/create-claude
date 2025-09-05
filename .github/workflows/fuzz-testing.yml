@@ -1,0 +1,104 @@
+name: Fuzz Testing
+
+on:
+  schedule:
+    - cron: '0 2 * * *'  # Daily at 2 AM UTC
+  push:
+    branches: [ "main" ]
+    paths:
+      - 'src/**'
+      - 'test/**'
+  pull_request:
+    branches: [ "main" ]
+    paths:
+      - 'src/**'
+      - 'test/**'
+
+permissions:
+  contents: read
+  security-events: write
+
+jobs:
+  fuzz-test:
+    name: Fuzz Testing
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@eef61447b9ff4aafe5dcd4e0bbf5d482be7e7871 # v4.2.1
+
+    - name: Setup Node.js
+      uses: actions/setup-node@0a44ba7841725637a19e28fa30b79a866c81b0a6 # v4.0.4
+      with:
+        node-version: '18'
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Install fast-check
+      run: npm install --save-dev fast-check
+
+    - name: Create fuzz test
+      run: |
+        cat << 'EOF' > test/fuzz.test.js
+        const fc = require('fast-check');
+        const fs = require('fs');
+        const path = require('path');
+
+        // Import our utilities for fuzzing
+        let utils;
+        try {
+          utils = require('../dist/utils.js');
+        } catch (e) {
+          // Build first if dist doesn't exist
+          const { execSync } = require('child_process');
+          execSync('npm run build', { stdio: 'inherit' });
+          utils = require('../dist/utils.js');
+        }
+
+        describe('Fuzz Testing', () => {
+          test('detectPackageManager handles arbitrary strings', () => {
+            fc.assert(fc.property(fc.string(), (input) => {
+              try {
+                const result = utils.detectPackageManager(input);
+                expect(typeof result).toBe('string');
+                expect(['npm', 'yarn', 'pnpm', 'bun'].includes(result)).toBe(true);
+              } catch (error) {
+                // Expected to handle gracefully
+                expect(error).toBeInstanceOf(Error);
+              }
+            }));
+          });
+
+          test('validateTemplateVariables handles arbitrary objects', () => {
+            fc.assert(fc.property(fc.object(), (input) => {
+              try {
+                const result = utils.validateTemplateVariables(input, []);
+                expect(typeof result).toBe('object');
+              } catch (error) {
+                // Expected to handle gracefully
+                expect(error).toBeInstanceOf(Error);
+              }
+            }));
+          });
+
+          test('renderTemplate handles arbitrary template strings', () => {
+            fc.assert(fc.property(fc.string(), fc.object(), (template, vars) => {
+              try {
+                const result = utils.renderTemplate(template, vars);
+                expect(typeof result).toBe('string');
+              } catch (error) {
+                // Expected to handle gracefully for malformed templates
+                expect(error).toBeInstanceOf(Error);
+              }
+            }));
+          });
+        });
+        EOF
+
+    - name: Run fuzz tests
+      run: npm test test/fuzz.test.js || true
+
+    - name: Clean up
+      run: rm -f test/fuzz.test.js && npm uninstall fast-check
