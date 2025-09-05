@@ -1,8 +1,16 @@
 #!/usr/bin/env node
-const { init } = require('../dist/index.js');
 const { promises: fs } = require('node:fs');
 const { join } = require('node:path');
 const { tmpdir } = require('node:os');
+
+let createClaudeModule;
+
+async function loadModule() {
+  if (!createClaudeModule) {
+    createClaudeModule = await import('../dist/index.js');
+  }
+  return createClaudeModule;
+}
 
 async function createTempDir() {
   const tempDir = join(tmpdir(), `create-claude-test-${Date.now()}`);
@@ -22,6 +30,7 @@ async function testBasicInit() {
   const testDir = await createTempDir();
   
   try {
+    const { init } = await loadModule();
     const result = await init(testDir);
     
     if (!result.success) {
@@ -117,6 +126,7 @@ async function testDryRun() {
   const testDir = await createTempDir();
   
   try {
+    const { init } = await loadModule();
     const result = await init(testDir, { dryRun: true });
     
     if (!result.success) {
@@ -156,6 +166,7 @@ async function testExistingFiles() {
     await fs.mkdir(join(testDir, '.claude'), { recursive: true });
     await fs.writeFile(join(testDir, '.claude', 'settings.local.json'), existingSettingsContent);
     
+    const { init } = await loadModule();
     const result = await init(testDir);
     
     if (!result.success) {
@@ -205,6 +216,7 @@ async function testInvalidDirectory() {
   console.log('Testing error handling with invalid directory...');
   
   try {
+    const { init } = await loadModule();
     const result = await init('/nonexistent/directory/that/should/not/exist');
     
     if (result.success) {
@@ -239,6 +251,7 @@ async function testAtomicOperations() {
     const crypto = require('crypto');
     const originalHash = crypto.createHash('sha256').update(originalContent).digest('hex');
     
+    const { init } = await loadModule();
     const result = await init(testDir);
     
     if (!result.success) {
@@ -283,6 +296,7 @@ async function testConcurrentInit() {
   const testDir = await createTempDir();
   
   try {
+    const { init } = await loadModule();
     const results = await Promise.allSettled([
       init(testDir),
       init(testDir),
@@ -335,6 +349,7 @@ async function testInterruptHandling() {
   try {
     await fs.writeFile(join(testDir, 'CLAUDE.md'), 'ORIGINAL');
     
+    const { init } = await loadModule();
     const initPromise = init(testDir);
     process.nextTick(() => {
         process.emit('SIGINT');
@@ -364,6 +379,7 @@ async function testLargeFiles() {
     await fs.writeFile(join(testDir, 'CLAUDE.md'), largeContent);
     
     const memBefore = process.memoryUsage().heapUsed;
+    const { init } = await loadModule();
     const result = await init(testDir);
     const memAfter = process.memoryUsage().heapUsed;
     
@@ -392,6 +408,7 @@ async function testWriteFailure() {
     await fs.writeFile(roFile, 'locked');
     await fs.chmod(roFile, 0o444);
     
+    const { init } = await loadModule();
     await init(testDir, { silent: true }).catch(() => {});
     
     await fs.chmod(roFile, 0o644).catch(() => {});
@@ -404,7 +421,7 @@ async function testWriteFailure() {
 
 async function testAtomicFunctions() {
   console.log('Testing atomic operations directly...');
-  const { withRetry, atomicWrite, atomicCopy, TransactionLog } = require('../dist/index.js');
+  const { withRetry, atomicWrite, atomicCopy, TransactionLog } = await loadModule();
   const testDir = await createTempDir();
   
   try {
@@ -461,7 +478,7 @@ async function testAtomicFunctions() {
 
 async function testUtilityFunctions() {
   console.log('Testing utility functions directly...');
-  const { detectPackageManager, detectRuntime, detectFramework, exists } = require('../dist/index.js');
+  const { detectPackageManager, detectRuntime, detectFramework, exists } = await loadModule();
   const testDir = await createTempDir();
   
   try {
@@ -504,7 +521,7 @@ async function testUtilityFunctions() {
 
 async function testTemplateRendering() {
   console.log('Testing template rendering functions...');
-  const { renderTemplate, validateTemplateVariables } = require('../dist/index.js');
+  const { renderTemplate, validateTemplateVariables } = await loadModule();
   
   try {
     const template = 'Project: {{PROJECT_NAME}}, runtime is {{RUNTIME}}!';
@@ -533,7 +550,7 @@ async function testTemplateRendering() {
 
 async function testCommandExecution() {
   console.log('Testing command execution functions...');
-  const { execute, executeQuiet, executeWithRetry } = require('../dist/index.js');
+  const { execute, executeQuiet, executeWithRetry } = await loadModule();
   const testDir = await createTempDir();
   
   try {
