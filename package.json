@@ -1,6 +1,6 @@
 {
   "name": "create-claude",
-  "version": "0.1.9",
+  "version": "0.1.7",
   "description": "One command. Zero config. Better Claude Code setup with agents, hooks, commands, and smart permissions.",
   "type": "module",
   "sideEffects": false,

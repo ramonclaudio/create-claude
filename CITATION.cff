@@ -6,7 +6,7 @@ abstract: "One command. Zero config. Better Claude Code setup with agents, hooks
 authors:
   - given-names: "RMNCLDYO"
     email: "hi@rmncldyo.com"
-    orcid: "https://orcid.org/0000-0000-0000-0000"
+    orcid: "https://orcid.org/0009-0008-2148-3095"
 repository-code: "https://github.com/RMNCLDYO/create-claude"
 url: "https://github.com/RMNCLDYO/create-claude"
 repository-artifact: "https://www.npmjs.com/package/create-claude"
