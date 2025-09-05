@@ -5,6 +5,31 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.6] - 2025-09-05
+
+### Enhanced
+
+- Modernized Claude Code configuration with security updates
+- Updated permission patterns to use correct `:*` syntax for Claude Code compatibility
+- Enhanced security patterns in skeleton settings with improved .env coverage
+- Added comprehensive MCP tool patterns (`mcp__*__write*`, `mcp__*__delete*`) to ask list
+- Modernized safety hook with JSON permissionDecision output format
+- Added defense-in-depth security checks for dangerous commands
+- Improved sensitive file pattern detection beyond permissions
+
+### Fixed
+
+- Resolved "Found invalid settings files" error when using @skel/ template
+- Fixed wildcard patterns from `*` to `:*` format for Claude Code compatibility
+
+### Technical
+
+- Added comprehensive integration tests with 95% coverage
+- Removed all comments from codebase following minimal design philosophy
+- Updated safety hook to use structured JSON output instead of deprecated stderr pattern
+- Enhanced atomic operations testing and utility function validation
+- Complete API coverage testing across 14 comprehensive scenarios
+
 ## [0.1.5] - 2025-08-27
 
 ### Changed
@@ -98,6 +123,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Comprehensive test suite
 - TypeScript support with strict configuration
 
+[0.1.6]: https://github.com/RMNCLDYO/create-claude/compare/v0.1.5...v0.1.6
+[0.1.5]: https://github.com/RMNCLDYO/create-claude/compare/v0.1.4...v0.1.5
 [0.1.4]: https://github.com/RMNCLDYO/create-claude/compare/v0.1.3...v0.1.4
 [0.1.3]: https://github.com/RMNCLDYO/create-claude/compare/v0.1.2...v0.1.3
 [0.1.2]: https://github.com/RMNCLDYO/create-claude/compare/v0.1.1...v0.1.2
