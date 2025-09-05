@@ -93,9 +93,9 @@ jobs:
 
     - name: Run fuzz tests
       run: |
-        cat << 'EOF' > fuzz.test.js
-        const fc = require('fast-check');
-        const utils = require('./dist/utils.js');
+        cat << 'EOF' > fuzz.test.mjs
+        import fc from 'fast-check';
+        import * as utils from './dist/utils.js';
 
         describe('Fuzz Testing', () => {
           test('detectPackageManager handles arbitrary strings', () => {
@@ -133,4 +133,20 @@ jobs:
           });
         });
         EOF
-        npx jest fuzz.test.js --testTimeout=30000
+        
+        cat << 'EOF' > jest.config.js
+        export default {
+          preset: 'default',
+          extensionsToTreatAsEsm: ['.mjs'],
+          globals: {
+            'ts-jest': {
+              useESM: true
+            }
+          },
+          transform: {},
+          testMatch: ['**/*.test.mjs'],
+          testTimeout: 30000
+        };
+        EOF
+        
+        npx jest fuzz.test.mjs
