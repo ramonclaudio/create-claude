@@ -89,58 +89,49 @@ jobs:
 
     - name: Install fast-check for fuzzing
       run: |
-        npm install fast-check@3.22.0 jest@29.7.0
+        npm install fast-check@3.22.0
 
     - name: Run fuzz tests
       run: |
         cat << 'EOF' > fuzz.test.mjs
+        import { test } from 'node:test';
+        import { strict as assert } from 'node:assert';
         import fc from 'fast-check';
         import * as utils from './dist/utils.js';
 
-        describe('Fuzz Testing', () => {
-          test('detectPackageManager handles arbitrary strings', () => {
-            fc.assert(fc.property(fc.string(), (input) => {
-              try {
-                const result = utils.detectPackageManager(input);
-                expect(typeof result).toBe('string');
-                expect(['npm', 'yarn', 'pnpm', 'bun'].includes(result)).toBe(true);
-              } catch (error) {
-                expect(error).toBeInstanceOf(Error);
-              }
-            }));
-          });
+        test('detectPackageManager handles arbitrary strings', () => {
+          fc.assert(fc.property(fc.string(), (input) => {
+            try {
+              const result = utils.detectPackageManager(input);
+              assert.equal(typeof result, 'string');
+              assert.ok(['npm', 'yarn', 'pnpm', 'bun'].includes(result));
+            } catch (error) {
+              assert.ok(error instanceof Error);
+            }
+          }));
+        });
 
-          test('validateTemplateVariables handles arbitrary objects', () => {
-            fc.assert(fc.property(fc.object(), (input) => {
-              try {
-                const result = utils.validateTemplateVariables(input, []);
-                expect(typeof result).toBe('object');
-              } catch (error) {
-                expect(error).toBeInstanceOf(Error);
-              }
-            }));
-          });
+        test('validateTemplateVariables handles arbitrary objects', () => {
+          fc.assert(fc.property(fc.object(), (input) => {
+            try {
+              const result = utils.validateTemplateVariables(input, []);
+              assert.equal(typeof result, 'object');
+            } catch (error) {
+              assert.ok(error instanceof Error);
+            }
+          }));
+        });
 
-          test('renderTemplate handles arbitrary template strings', () => {
-            fc.assert(fc.property(fc.string(), fc.object(), (template, vars) => {
-              try {
-                const result = utils.renderTemplate(template, vars);
-                expect(typeof result).toBe('string');
-              } catch (error) {
-                expect(error).toBeInstanceOf(Error);
-              }
-            }));
-          });
+        test('renderTemplate handles arbitrary template strings', () => {
+          fc.assert(fc.property(fc.string(), fc.object(), (template, vars) => {
+            try {
+              const result = utils.renderTemplate(template, vars);
+              assert.equal(typeof result, 'string');
+            } catch (error) {
+              assert.ok(error instanceof Error);
+            }
+          }));
         });
         EOF
         
-        cat << 'EOF' > jest.config.js
-        export default {
-          transform: {},
-          testMatch: ['**/*.test.mjs'],
-          testTimeout: 30000,
-          testEnvironment: 'node'
-        };
-        EOF
-        
-        npx jest fuzz.test.mjs
+        node --test fuzz.test.mjs
