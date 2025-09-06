@@ -38,7 +38,7 @@ We follow the principle of [Coordinated Vulnerability Disclosure](https://cheats
 
 ## Security Updates
 
-Security updates will be released as patch versions (e.g., 0.1.6 → 0.1.7) and will be announced in:
+Security updates will be released as patch versions (e.g., 0.1.7 → 0.1.8) and will be announced in:
 
 - GitHub Security Advisories
 - Release notes

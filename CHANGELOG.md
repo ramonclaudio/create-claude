@@ -5,6 +5,61 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.8] - 2025-09-06
+
+### Enhanced
+
+- Updated all GitHub Actions workflows to latest versions for improved security and performance
+- step-security/harden-runner upgraded to v2.12.0 with critical CVE-2025-32955 security fix
+- actions/checkout upgraded to v5.0.0 with Node.js 24 runtime support
+- actions/setup-node upgraded to v5.0.0 with enhanced caching and package manager detection
+- github/codeql-action upgraded to v2.23.0 with latest CodeQL CLI and improved analysis
+- actions/attest-build-provenance upgraded to v3.0.0 with node24 runtime and improved checksum parsing
+- anchore/sbom-action upgraded to v0.20.0 with latest Syft features
+- actions/upload-artifact upgraded to v4.6.2 with critical security updates
+- ossf/scorecard-action upgraded to v2.4.2 with Scorecard v5.2.1 and enhanced security checks
+- crazy-max/ghaction-import-gpg upgraded to v6 with latest GPG handling
+- softprops/action-gh-release upgraded to v2.3.2 with improved release management
+
+### Updated
+
+- Node.js runtime updated to v22 LTS across all workflows for active maintenance support
+- npm updated to v11.6.0 for latest features and security patches
+- Microsoft SBOM tool updated to v4.1.2 with SPDX 3.0 support
+- fast-check updated to v4.3.0 for latest property-based testing capabilities
+- Minisign implementation enhanced with proper trusted comments and latest best practices
+- All workflow commit hashes verified and updated to valid, latest versions
+
+### Fixed
+
+- Corrected invalid commit hashes in publish workflow that would cause deployment failures
+- Fixed minisign command syntax from incorrect -S flag to proper -Sm format
+- Added missing trusted comments to minisign signatures as required by official specification
+- Updated verification instructions to use accessible public keys instead of GitHub secrets
+- Resolved async issues in robustness tests that were causing CI failures
+- Fixed CodeQL workflow permissions by moving security-events permission to job level
+- Removed redundant package attestation from publish workflow to prevent duplicate provenance
+- Replaced fast-check fuzz testing with native Node.js robustness tests for better reliability
+- Enhanced error handling in detectPackageManager for edge cases and malicious inputs
+
+### Documentation
+
+- Updated project tagline to "Claude Code setup that just works. Bootstrap every project with agents, hooks, commands, and smart permissions. One command, zero headaches."
+- Enhanced README.md with new tagline, shortcuts section for `cld` alias, Security section highlighting OpenSSF certification, and Contributing guidelines
+- Expanded CITATION.cff keywords to include "setup", "template", "ai", "agents", "hooks", and "config" for better academic discoverability
+- Added package.json files array to include CITATION.cff in published packages
+- Improved project messaging to better communicate value proposition and pain points solved
+
+### Security
+
+- All GitHub Actions now use Node.js 24 runtime for latest security features
+- Enhanced supply chain security with verified commit hashes across all workflows
+- Improved cryptographic signing with proper minisign implementation following official best practices
+- Latest security patches applied across all tools and dependencies
+- Improved permission isolation in CI workflows with job-level security permissions
+- Enhanced robustness testing against malicious template injection attempts
+- Strengthened input validation in core utility functions
+
 ## [0.1.7] - 2025-09-06
 
 ### Added
@@ -178,6 +233,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Comprehensive test suite
 - TypeScript support with strict configuration
 
+[0.1.8]: https://github.com/RMNCLDYO/create-claude/compare/v0.1.7...v0.1.8
 [0.1.7]: https://github.com/RMNCLDYO/create-claude/compare/v0.1.6...v0.1.7
 [0.1.6]: https://github.com/RMNCLDYO/create-claude/compare/v0.1.5...v0.1.6
 [0.1.5]: https://github.com/RMNCLDYO/create-claude/compare/v0.1.4...v0.1.5

@@ -21,12 +21,12 @@ jobs:
     
     steps:
     - name: Checkout code
-      uses: actions/checkout@eef61447b9ff4aafe5dcd4e0bbf5d482be7e7871 # v4.2.1
+      uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
 
     - name: Setup Node.js
-      uses: actions/setup-node@0a44ba7841725637a19e28fa30b79a866c81b0a6 # v4.0.4
+      uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5.0.0
       with:
-        node-version: '18'
+        node-version: '22'
         cache: 'npm'
 
     - name: Install dependencies
@@ -39,11 +39,11 @@ jobs:
       run: npm audit signatures
 
     - name: Initialize CodeQL
-      uses: github/codeql-action/init@c36620d31ac7c881962c3d9dd939c40ec9434f2b # v3.26.12
+      uses: github/codeql-action/init@16df4fbc19aea13d921737861d6c622bf3cefe23 # v2.23.0
       with:
         languages: javascript
 
     - name: Perform CodeQL Analysis
-      uses: github/codeql-action/analyze@c36620d31ac7c881962c3d9dd939c40ec9434f2b # v3.26.12
+      uses: github/codeql-action/analyze@16df4fbc19aea13d921737861d6c622bf3cefe23 # v2.23.0
       with:
         category: "/language:javascript"

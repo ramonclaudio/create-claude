@@ -1,9 +1,11 @@
 {
   "name": "create-claude",
-  "version": "0.1.7",
-  "description": "One command. Zero config. Better Claude Code setup with agents, hooks, commands, and smart permissions.",
+  "version": "0.1.8",
+  "description": "Claude Code setup that just works. Bootstrap every project with agents, hooks, commands, and smart permissions. One command, zero headaches.",
   "type": "module",
   "sideEffects": false,
+  "private": false,
+  "packageManager": "npm@11.6.0",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
@@ -24,7 +26,8 @@
     "LICENSE",
     "DISCLAIMER.md",
     "CHANGELOG.md",
-    "SECURITY.md"
+    "SECURITY.md",
+    "CITATION.cff"
   ],
   "funding": {
     "type": "github",
@@ -93,6 +96,7 @@
     "arm64"
   ],
   "preferGlobal": false,
+  "stability": "stable",
   "devDependencies": {
     "@types/node": "^20.19.11",
     "typescript": "^5.3.0"
