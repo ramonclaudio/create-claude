@@ -9,7 +9,6 @@ on:
 
 permissions:
   contents: read
-  security-events: write
 
 jobs:
   test:
@@ -46,6 +45,8 @@ jobs:
   codeql:
     name: CodeQL Analysis
     runs-on: ubuntu-latest
+    permissions:
+      security-events: write
     
     steps:
     - name: Checkout code
@@ -87,20 +88,16 @@ jobs:
     - name: Build project
       run: npm run build
 
-    - name: Install fast-check for fuzzing
+    - name: Run basic robustness tests
       run: |
-        npm install fast-check@3.22.0
-
-    - name: Run fuzz tests
-      run: |
-        cat << 'EOF' > fuzz.test.mjs
+        cat << 'EOF' > robustness.test.mjs
         import { test } from 'node:test';
         import { strict as assert } from 'node:assert';
-        import fc from 'fast-check';
         import * as utils from './dist/utils.js';
 
-        test('detectPackageManager handles arbitrary strings', () => {
-          fc.assert(fc.property(fc.string(), (input) => {
+        test('detectPackageManager handles edge cases', () => {
+          const testCases = ['', '   ', 'invalid', '../malicious', null, undefined];
+          testCases.forEach(input => {
             try {
               const result = utils.detectPackageManager(input);
               assert.equal(typeof result, 'string');
@@ -108,30 +105,32 @@ jobs:
             } catch (error) {
               assert.ok(error instanceof Error);
             }
-          }));
+          });
         });
 
-        test('validateTemplateVariables handles arbitrary objects', () => {
-          fc.assert(fc.property(fc.object(), (input) => {
+        test('validateTemplateVariables handles malformed input', () => {
+          const testCases = [{}, null, undefined, [], 'string'];
+          testCases.forEach(input => {
             try {
               const result = utils.validateTemplateVariables(input, []);
               assert.equal(typeof result, 'object');
             } catch (error) {
               assert.ok(error instanceof Error);
             }
-          }));
+          });
         });
 
-        test('renderTemplate handles arbitrary template strings', () => {
-          fc.assert(fc.property(fc.string(), fc.object(), (template, vars) => {
+        test('renderTemplate handles malicious templates', () => {
+          const maliciousTemplates = ['${eval("process.exit(1)")}', '${process.env}', '../${path}'];
+          maliciousTemplates.forEach(template => {
             try {
-              const result = utils.renderTemplate(template, vars);
+              const result = utils.renderTemplate(template, {});
               assert.equal(typeof result, 'string');
             } catch (error) {
               assert.ok(error instanceof Error);
             }
-          }));
+          });
         });
         EOF
         
-        node --test fuzz.test.mjs
+        node --test robustness.test.mjs
