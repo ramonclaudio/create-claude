@@ -136,16 +136,11 @@ jobs:
         
         cat << 'EOF' > jest.config.js
         export default {
-          preset: 'default',
           extensionsToTreatAsEsm: ['.mjs'],
-          globals: {
-            'ts-jest': {
-              useESM: true
-            }
-          },
           transform: {},
           testMatch: ['**/*.test.mjs'],
-          testTimeout: 30000
+          testTimeout: 30000,
+          testEnvironment: 'node'
         };
         EOF
         
