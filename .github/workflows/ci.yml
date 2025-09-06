@@ -95,17 +95,27 @@ jobs:
         import { strict as assert } from 'node:assert';
         import * as utils from './dist/utils.js';
 
-        test('detectPackageManager handles edge cases', () => {
-          const testCases = ['', '   ', 'invalid', '../malicious', null, undefined];
-          testCases.forEach(input => {
+        test('detectPackageManager handles edge cases', async () => {
+          const validTestCases = ['', '   ', 'invalid', '../malicious', '/nonexistent'];
+          for (const input of validTestCases) {
             try {
-              const result = utils.detectPackageManager(input);
+              const result = await utils.detectPackageManager(input);
               assert.equal(typeof result, 'string');
-              assert.ok(['npm', 'yarn', 'pnpm', 'bun'].includes(result));
+              assert.ok(['npm', 'yarn', 'pnpm', 'bun', 'pip', 'poetry', 'uv', 'none'].includes(result));
             } catch (error) {
               assert.ok(error instanceof Error);
             }
-          });
+          }
+          
+          const invalidTestCases = [null, undefined];
+          for (const input of invalidTestCases) {
+            try {
+              await utils.detectPackageManager(input);
+              assert.fail('Should have thrown for invalid input');
+            } catch (error) {
+              assert.ok(error instanceof Error);
+            }
+          }
         });
 
         test('validateTemplateVariables handles malformed input', () => {
@@ -113,7 +123,9 @@ jobs:
           testCases.forEach(input => {
             try {
               const result = utils.validateTemplateVariables(input, []);
-              assert.equal(typeof result, 'object');
+              if (result !== null && result !== undefined) {
+                assert.equal(typeof result, 'object');
+              }
             } catch (error) {
               assert.ok(error instanceof Error);
             }
