@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.1.7] - 2025-09-05
+## [0.1.7] - 2025-09-06
 
 ### Added
 
@@ -21,9 +21,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - NPM audit signatures verification workflow
 - Provenance attestation in publish workflow with OIDC trusted publishing
 - Comprehensive README badges for security, quality, and funding
-- Fuzz testing workflow with fast-check integration
+- Fuzz testing workflow with fast-check integration using native Node.js test runner
 - SSH commit signing for cryptographic verification
 - OpenSSF Best Practices Badge with passing level certification
+- Comprehensive CI workflow with test suite, CodeQL analysis, and fuzz testing
 
 ### Enhanced
 
@@ -35,16 +36,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Updated README badges with distinct colors for better visibility
 - Removed sponsors badge to maintain professional appearance
 - Improved npm downloads badge styling with purple color
+- Pinned npm version in all workflows for supply chain security
+- Updated integration tests to support ES module imports with dynamic import()
+
+### Fixed
+
+- ES module compatibility issues in integration tests
+- NPM audit workflow false positive failures with corrected vulnerability check logic
+- CI fuzz testing by replacing Jest with native Node.js test runner
+- Updated attest-build-provenance action to correct SHA hash for v3.0.0
+- Resolved "Cannot use import statement outside a module" errors in test files
+- Fixed pinned dependencies warnings in GitHub workflows
 
 ### Security
 
 - All commits now cryptographically signed with SSH keys
 - Branch protection enabled with required reviews and status checks
 - Dependency scanning and vulnerability monitoring
-- Supply chain security with pinned action hashes
-- Automated fuzz testing for robustness validation
+- Supply chain security with pinned action hashes and npm versions
+- Automated fuzz testing for robustness validation with property-based testing
 - Achieved OpenSSF Best Practices Badge demonstrating commitment to security standards
 - Fixed vulnerability check logic in audit workflow to prevent false positives
+- Comprehensive CI/CD pipeline with security scanning on every commit and PR
+- CodeQL static analysis running on all JavaScript/TypeScript code
 
 ## [0.1.6] - 2025-09-05
 
