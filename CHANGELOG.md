@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.12] - 2025-09-07
+
+### Security
+
+- **OpenSSF Scorecard**: Added PAT support for branch protection verification
+- **Workflow Enhancement**: Scorecard workflow now uses dedicated token for full security analysis
+
+### Technical
+
+- Added `repo_token` parameter to Scorecard action for admin-level checks
+- Enables complete branch protection scoring in OpenSSF Scorecard
+
 ## [0.1.11] - 2025-09-07
 
 ### Added
