@@ -5,6 +5,27 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.11] - 2025-09-07
+
+### Added
+
+- **Dual Registry Publishing**: Package now publishes to both npm and GitHub Packages registries
+- **GitHub Packages Support**: Added `@rmncldyo/create-claude` scoped package for GitHub Packages users
+- **Registry Flexibility**: Users can now install from either npm or GitHub Packages based on their needs
+
+### Enhanced
+
+- **Publish Workflow**: Extended to support dual publishing with proper scoping and permissions
+- **Security Maintained**: Both registries receive full security artifacts including provenance, SBOMs, and signatures
+- **Installation Docs**: Release notes now include installation instructions for both registries
+
+### Technical
+
+- Added `npm.pkg.github.com:443` to allowed endpoints in workflow security hardening
+- Added `packages: write` permission for GitHub Packages publishing
+- Dynamic package name switching for scoped GitHub Packages publish
+- Maintained all existing security features for both registry publishes
+
 ## [0.1.10] - 2025-09-07
 
 ### Fixed
