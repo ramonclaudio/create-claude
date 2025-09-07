@@ -66,13 +66,11 @@ jobs:
         run: |
           # Download minisign with checksum verification
           curl -LO https://github.com/jedisct1/minisign/releases/download/0.12/minisign-0.12-linux.tar.gz
-          curl -LO https://github.com/jedisct1/minisign/releases/download/0.12/minisign-0.12-linux.tar.gz.sha256
-          # Fix checksum format (file contains only hash, not "hash  filename" format)
-          echo "$(cat minisign-0.12-linux.tar.gz.sha256)  minisign-0.12-linux.tar.gz" > minisign-0.12-linux.tar.gz.sha256
-          sha256sum -c minisign-0.12-linux.tar.gz.sha256
+          # Verify against known checksum (minisign doesn't provide .sha256 files, only .minisig signatures)
+          echo "9a599b48ba6eb7b1e80f12f36b94ceca7c00b7a5173c95c3efc88d9822957e73  minisign-0.12-linux.tar.gz" | sha256sum -c
           tar xzf minisign-0.12-linux.tar.gz
           sudo mv minisign-linux/x86_64/minisign /usr/local/bin/
-          rm -f minisign-0.12-linux.tar.gz minisign-0.12-linux.tar.gz.sha256
+          rm -f minisign-0.12-linux.tar.gz
           
       - name: Setup minisign keys
         run: |
