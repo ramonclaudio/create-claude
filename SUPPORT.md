@@ -45,7 +45,7 @@ Before creating an issue, please:
 
 ## Commercial Support
 
-For priority support, custom implementations, or consulting services, contact hi@rmncldyo.com.
+For priority support, custom implementations, or consulting services, contact <hi@rmncldyo.com>.
 
 ## Contributing
 

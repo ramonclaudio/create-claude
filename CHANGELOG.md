@@ -5,6 +5,44 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.9] - 2025-09-07
+
+### Added
+
+- **Enhanced Permission System**: Implemented `bypassPermissions` mode for maximum autonomy with safety guardrails
+- **8 Custom Slash Commands**: Added `/commit`, `/explain`, `/fix`, `/optimize`, `/pr`, `/review`, `/test`, `/validate` with proper frontmatter and argument support
+- **3 Specialized Subagents**: Pre-commit validator, code refactorer, and debugger with focused tool access
+- **Session Lifecycle Hooks**: SessionEnd hooks for project context and cleanup
+- **Bash Command Execution**: Added `!` prefix support in slash commands for dynamic git context
+- **Import-based Memory**: CLAUDE.md now uses `@` imports for README and package.json references via `PROJECT_IMPORTS` template variable
+- **Environment Variables**: Configured bash timeouts and working directory maintenance
+- **Statusline Helper Scripts**: Added statusline-git.cjs and statusline-detect.cjs for modular statusline functionality
+- **Template Variable**: Added `PROJECT_IMPORTS` to dynamically include project configuration files in CLAUDE.md
+
+### Changed
+
+- **Simplified Permissions**: Switched from explicit tool lists to `allow: ["*"]` with targeted deny/ask lists
+- **Safety Hook Rewrite**: Enhanced with permissive mode detection and refined dangerous pattern matching
+- **Terse Output Style**: Configured for minimal, efficient responses without bloat
+- **Status Line**: Advanced implementation with git integration, framework detection, and color coding
+- **Gitignore**: Fixed to properly track skel/.claude template files while ignoring local instances
+
+### Improved
+
+- **Subagent Formatting**: Added proper markdown headers and structure to pre-commit and refactor agents
+- **Command Arguments**: Added `argument-hint` and `$ARGUMENTS` placeholders to relevant commands
+- **Security Patterns**: Refined dangerous command detection to only block truly destructive operations
+- **Delete Confirmations**: All delete operations now require explicit user confirmation
+- **File Validation**: Updated init.ts to validate all 20 template files including new scripts and hooks
+- **CLI Output**: Updated to display all 20 created files instead of subset
+
+### Fixed
+
+- **Hook Timeout**: Reduced safety hook timeout from 5 to 2 seconds for better responsiveness
+- **Path Patterns**: Corrected permission patterns to use `//` for absolute paths and `~` for home directory
+- **Template System**: Added PROJECT_IMPORTS to types.ts and template.ts for proper variable handling
+- **Required Files**: Added statusline-git.cjs and statusline-detect.cjs to init.ts validation list
+
 ## [0.1.8] - 2025-09-06
 
 ### Enhanced
@@ -233,6 +271,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Comprehensive test suite
 - TypeScript support with strict configuration
 
+[0.1.9]: https://github.com/RMNCLDYO/create-claude/compare/v0.1.8...v0.1.9
 [0.1.8]: https://github.com/RMNCLDYO/create-claude/compare/v0.1.7...v0.1.8
 [0.1.7]: https://github.com/RMNCLDYO/create-claude/compare/v0.1.6...v0.1.7
 [0.1.6]: https://github.com/RMNCLDYO/create-claude/compare/v0.1.5...v0.1.6

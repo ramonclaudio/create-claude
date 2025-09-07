@@ -180,6 +180,66 @@ function formatRuntime(runtime: string): string {
   return runtimeNames[runtime] || runtime.charAt(0).toUpperCase() + runtime.slice(1);
 }
 
+async function getProjectImports(
+  projectPath: string,
+  runtime: string
+): Promise<string | undefined> {
+  const importMappings: Record<string, Array<{ file: string; text: string }>> = {
+    'typescript': [
+      { file: 'package.json', text: '@package.json for available scripts' },
+      { file: 'tsconfig.json', text: '@tsconfig.json for TypeScript configuration' }
+    ],
+    'node': [
+      { file: 'package.json', text: '@package.json for available scripts' }
+    ],
+    'bun': [
+      { file: 'package.json', text: '@package.json for available scripts' },
+      { file: 'bun.lockb', text: '@bun.lockb for locked dependencies' }
+    ],
+    'python': [
+      { file: 'pyproject.toml', text: '@pyproject.toml for project configuration' },
+      { file: 'requirements.txt', text: '@requirements.txt for dependencies' },
+      { file: 'setup.py', text: '@setup.py for package configuration' },
+      { file: 'Pipfile', text: '@Pipfile for dependencies' }
+    ],
+    'go': [
+      { file: 'go.mod', text: '@go.mod for module dependencies' },
+      { file: 'go.sum', text: '@go.sum for dependency checksums' }
+    ],
+    'rust': [
+      { file: 'Cargo.toml', text: '@Cargo.toml for project configuration' },
+      { file: 'Cargo.lock', text: '@Cargo.lock for locked dependencies' }
+    ],
+    'java': [
+      { file: 'pom.xml', text: '@pom.xml for Maven configuration' },
+      { file: 'build.gradle', text: '@build.gradle for Gradle configuration' },
+      { file: 'build.gradle.kts', text: '@build.gradle.kts for Gradle Kotlin DSL' }
+    ],
+    'c/c++': [
+      { file: 'CMakeLists.txt', text: '@CMakeLists.txt for CMake configuration' },
+      { file: 'Makefile', text: '@Makefile for build configuration' },
+      { file: 'meson.build', text: '@meson.build for Meson configuration' }
+    ]
+  };
+
+  const configs = importMappings[runtime];
+  if (!configs) return undefined;
+
+  const foundImports: string[] = [];
+  for (const config of configs) {
+    const filePath = join(projectPath, config.file);
+    if (await exists(filePath)) {
+      foundImports.push(config.text);
+    }
+  }
+
+  if (foundImports.length === 0) return undefined;
+  if (foundImports.length === 1) return foundImports[0];
+  
+  const lastImport = foundImports.pop()!;
+  return foundImports.join(', ') + ' and ' + lastImport;
+}
+
 export async function getTemplateVariables(
   context: ProjectContext,
   projectPath: string
@@ -188,6 +248,7 @@ export async function getTemplateVariables(
   
   const gitInfo = context.hasGit ? await getGitInfo(projectPath) : {};
   const purpose = await detectPurpose(projectPath);
+  const projectImports = await getProjectImports(projectPath, context.runtime);
   
   const variables: TemplateVariables = {
     PROJECT_NAME: context.projectName,
@@ -203,7 +264,8 @@ export async function getTemplateVariables(
     ...(context.gitRemoteUrl ? { GIT_REMOTE_URL: context.gitRemoteUrl } : {}),
     ...(gitInfo.userName ? { USER_NAME: gitInfo.userName } : {}),
     ...(gitInfo.userEmail ? { USER_EMAIL: gitInfo.userEmail } : {}),
-    ...(purpose ? { PURPOSE: purpose } : {})
+    ...(purpose ? { PURPOSE: purpose } : {}),
+    ...(projectImports ? { PROJECT_IMPORTS: projectImports } : {})
   };
   
   logger.debug('Template variables ready', {

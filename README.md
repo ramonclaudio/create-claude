@@ -4,11 +4,7 @@ Claude Code setup that just works. Bootstrap every project with agents, hooks, c
 
 [![version](https://img.shields.io/npm/v/create-claude.svg?label=version&color=brightgreen)](https://www.npmjs.com/package/create-claude)
 [![downloads](https://img.shields.io/npm/dm/create-claude.svg?label=downloads&color=blue)](https://www.npmjs.com/package/create-claude)
-[![package size](https://img.shields.io/npm/unpacked-size/create-claude?label=package%20size&color=orange)](https://www.npmjs.com/package/create-claude)
-[![node version](https://img.shields.io/node/v/create-claude?label=node%20version&color=forestgreen)](https://www.npmjs.com/package/create-claude)
-[![build](https://github.com/RMNCLDYO/create-claude/workflows/CI/badge.svg?label=build&color=navy)](https://github.com/RMNCLDYO/create-claude/actions/workflows/ci.yml)
-[![security](https://github.com/RMNCLDYO/create-claude/workflows/Security%20Scan/badge.svg?label=security&color=purple)](https://github.com/RMNCLDYO/create-claude/actions/workflows/security.yml)
-[![openssf](https://www.bestpractices.dev/projects/11141/badge?label=openssf&color=gold)](https://www.bestpractices.dev/projects/11141)
+[![package size](https://img.shields.io/npm/unpacked-size/create-claude?label=package%20size&color=yellow)](https://www.npmjs.com/package/create-claude)
 [![license](https://img.shields.io/badge/license-MIT-red.svg)](https://opensource.org/licenses/MIT)
 
 ## Quick Start
@@ -17,11 +13,12 @@ Claude Code setup that just works. Bootstrap every project with agents, hooks, c
 npm create claude
 ```
 
-*Adds the **local** config files to your project. ZERO dependencies, ZERO  overhead.*
+*Adds **local** Claude Code config files to your project. ZERO dependencies, ZERO  overhead.*
 
 ## Installation Options
 
 ### Package Managers
+
 ```bash
 npm create claude               # npm
 pnpm create claude              # pnpm  
@@ -30,12 +27,14 @@ yarn create claude              # yarn
 ```
 
 ### Flags
+
 ```bash
 npm create claude --dry-run     # Preview files
 npm create claude --help        # All options
 ```
 
 ### Shortcuts
+
 ```bash
 cld                             # Short alias
 npx cld                         # Via npx
@@ -44,11 +43,13 @@ npx cld                         # Via npx
 ## Programmatic Usage
 
 ### Installation
+
 ```bash
 npm i create-claude
 ```
 
 ### Usage
+
 ```typescript
 import { init } from 'create-claude';
 
@@ -57,14 +58,35 @@ await init('./my-project');
 
 ## Features
 
-### Smart Configuration
-- **Auto-detection**: Finds your package.json scripts, formatters, linters
-- **Smart permissions**: Pre-approves safe operations, blocks dangerous ones
+### Maximum Autonomy with Safety
 
-### Enhanced Workflow  
-- **Custom agents**: `/refactor` and `/validate` commands
-- **Better statusline**: Shows Git branch, uncommitted changes
-- **Format hooks**: Runs Prettier/ESLint/etc automatically
+- **bypassPermissions mode**: Claude Code operates freely while dangerous operations are blocked
+- **Smart safety hooks**: Only blocks truly destructive commands (rm -rf /, sudo rm, disk formatting)
+- **Delete confirmations**: All file/directory deletions require explicit user approval
+
+### 8 Custom Slash Commands
+
+- **`/commit`**: Create git commits with Haiku model for cost efficiency
+- **`/explain`**: Get concise code explanations
+- **`/fix`**: Fix issues with structured approach
+- **`/optimize`**: Performance improvements
+- **`/pr`**: Create pull requests with git context
+- **`/review`**: Brutal code reviews
+- **`/test`**: Run tests with pattern support
+- **`/validate`**: Lint, typecheck, and format
+
+### 3 Specialized Subagents
+
+- **pre-commit**: Ruthless validation before commits
+- **refactor**: Aggressive complexity reduction
+- **debugger**: Root cause analysis and fixes
+
+### Production-Ready Configuration
+
+- **Session hooks**: Automatic cleanup on exit
+- **Advanced statusline**: Git status, framework detection, color-coded information with modular helpers
+- **Import-based memory**: CLAUDE.md uses `@` imports for README and dynamically includes project configs (package.json, Cargo.toml, etc.)
+- **Terse output style**: Minimal, efficient responses without bloat
 
 ## FAQ
 
@@ -77,6 +99,7 @@ Yes. It only creates config files, never modifies your code. Each file operation
 # If something goes wrong, backups are here:
 ls .create-claude-backup-*
 ```
+
 </details>
 
 <details>
@@ -104,6 +127,7 @@ That's it. No global installs, no dependencies.
 <summary><strong>Does it work with my tools?</strong></summary>
 
 It auto-detects:
+
 - **Formatters**: Prettier, ESLint, Biome, dprint
 - **Package managers**: npm, yarn, pnpm, bun  
 - **Languages**: JavaScript, TypeScript, Python, Go, Rust
@@ -115,28 +139,44 @@ Can't find your tool? It falls back to sensible defaults.
 <details>
 <summary><strong>What files does it create?</strong></summary>
 
+Creates 20 files in total:
+
 ```
 .claude/
 ├── settings.local.json     # Permissions, tool detection
 ├── hooks/
 │   ├── format.cjs         # Auto-format on save
-│   └── safety.cjs         # Block dangerous operations
+│   ├── safety.cjs         # Block dangerous operations
+│   └── session-end.cjs    # Cleanup on exit
 ├── agents/
-│   ├── refactor.md        # /refactor command
-│   └── pre-commit.md      # Git hook integration
+│   ├── pre-commit.md      # Ruthless validation
+│   ├── refactor.md        # Complexity reduction
+│   └── debugger.md        # Root cause analysis
 ├── commands/
-│   ├── validate.md        # /validate command
-│   └── test.md            # /test command
-└── scripts/
-    └── statusline.cjs     # Git status in prompt
+│   ├── commit.md          # Git commits with Haiku
+│   ├── explain.md         # Code explanations
+│   ├── fix.md             # Structured fixes
+│   ├── optimize.md        # Performance improvements
+│   ├── pr.md              # Pull request creation
+│   ├── review.md          # Brutal code reviews
+│   ├── test.md            # Test runner
+│   └── validate.md        # Lint, typecheck, format
+├── scripts/
+│   ├── statusline.cjs         # Git status in prompt
+│   ├── statusline-git.cjs     # Git operations helper
+│   └── statusline-detect.cjs  # Framework detection helper
+└── output-styles/
+    └── terse.md                # Minimal output style
 
 CLAUDE.md                   # Project-specific instructions
 ```
+
 </details>
 
 ## Security
 
 This project follows security best practices:
+
 - All dependencies are audited and kept up-to-date
 - Code is scanned with CodeQL and other security tools
 - OpenSSF Scorecard certified

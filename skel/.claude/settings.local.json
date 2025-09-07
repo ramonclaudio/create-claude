@@ -1,64 +1,49 @@
 {
   "permissions": {
-    "allow": [
-      "Bash",
-      "Edit", 
-      "Glob",
-      "Grep",
-      "LS",
-      "MultiEdit",
-      "NotebookEdit",
-      "NotebookRead", 
-      "Read",
-      "Task",
-      "TodoWrite",
-      "WebFetch",
-      "WebSearch",
-      "Write"
-    ],
+    "allow": ["*"],
     "deny": [
-      "Bash(:*sudo:*)",
-      "Bash(:*su :*)",
-      "Bash(:*doas:*)",
+      "Bash(sudo rm:*)",
+      "Bash(rm -rf /:*)",
+      "Bash(rm -rf ~:*)",
+      "Bash(dd:*of=/dev/:*)",
+      "Bash(mkfs:*)",
+      "Bash(fdisk:*)",
+      "Bash(curl:*|:*)",
+      "Bash(wget:*|:*)",
       "Bash(:*eval:*)",
-      "Bash(:*|:*sh:*)",
-      "Bash(:*|:*bash:*)",
-      "Bash(:*curl:*|:*sh:*)",
-      "Bash(:*wget:*|:*sh:*)",
-      "Read(/etc/**)",
-      "Read(/root/**)",
-      "Read(/sys/**)",
-      "Read(/proc/**)",
-      "Read(**/.env)",
-      "Read(**/.env.*)",
-      "Read(**/secrets/**)",
-      "Read(./config/credentials.json)",
-      "Read(~/.ssh/**)",
+      "Bash(:*exec:*)",
+      "Write(//etc/passwd)",
+      "Write(//etc/shadow)",
+      "Edit(//etc/passwd)",
+      "Edit(//etc/shadow)",
+      "Read(~/.ssh/id_*)",
       "Read(**/*.key)",
       "Read(**/*.pem)",
-      "Read(**/build/**)",
-      "Edit(/etc/**)",
-      "Edit(/root/**)",
-      "Edit(/sys/**)",
-      "Edit(/proc/**)",
-      "Write(/etc/**)",
-      "Write(/root/**)",
-      "Write(/sys/**)",
-      "Write(/proc/**)"
+      "Read(.env*)",
+      "Read(**/secrets/**)",
+      "Read(~/.aws/credentials)",
+      "Read(~/.config/gcloud/**)"
     ],
     "ask": [
-      "Bash(:*rm :*)",
-      "Bash(:*rmdir:*)",
-      "Bash(:*trash:*)",
-      "Bash(:*find:*-delete:*)",
-      "Bash(:*xargs:*rm:*)",
-      "Bash(:*dd :*)",
-      "Bash(:*mkfs:*)",
-      "Bash(:*fdisk:*)",
-      "mcp__filesystem__delete*",
-      "mcp__filesystem__move*",
-      "mcp__*__write*",
-      "mcp__*__delete*"
+      "Bash(rm )",
+      "Bash(rm -)",
+      "Bash(rmdir:*)",
+      "Bash(trash:*)",
+      "Bash(find:*-delete:*)",
+      "Bash(xargs:*rm:*)",
+      "Bash(chmod 777:*)",
+      "Bash(chown:*)",
+      "Bash(git push:*)",
+      "Bash(npm publish:*)",
+      "Bash(pip install:*)",
+      "Bash(brew install:*)",
+      "Bash(apt install:*)",
+      "Bash(apt-get install:*)",
+      "Bash(yum install:*)",
+      "Bash(curl )",
+      "Bash(wget )",
+      "WebFetch",
+      "mcp__github__merge_pull_request"
     ],
     "defaultMode": "bypassPermissions"
   },
@@ -82,7 +67,18 @@
           {
             "type": "command",
             "command": "node $CLAUDE_PROJECT_DIR/.claude/hooks/safety.cjs",
-            "timeout": 5
+            "timeout": 2
+          }
+        ]
+      }
+    ],
+    "SessionEnd": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node $CLAUDE_PROJECT_DIR/.claude/hooks/session-end.cjs",
+            "timeout": 2
           }
         ]
       }
@@ -93,5 +89,10 @@
     "command": "node $CLAUDE_PROJECT_DIR/.claude/scripts/statusline.cjs",
     "padding": 0
   },
-  "outputStyle": "terse"
+  "outputStyle": "terse",
+  "env": {
+    "CLAUDE_BASH_MAINTAIN_PROJECT_WORKING_DIR": "1",
+    "BASH_DEFAULT_TIMEOUT_MS": "120000",
+    "BASH_MAX_TIMEOUT_MS": "600000"
+  }
 }

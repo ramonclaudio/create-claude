@@ -9,6 +9,7 @@ const ALLOWED_TEMPLATE_KEYS = new Set([
   'VERSION_CONTROL',
   'FRAMEWORK',
   'PURPOSE',
+  'PROJECT_IMPORTS',
   'GIT_REMOTE_URL',
   'USER_NAME',
   'USER_EMAIL',
@@ -134,6 +135,7 @@ export function validateTemplateVariables(variables: TemplateVariables): Templat
       case 'USER_NAME':
       case 'PROJECT_PATH':
       case 'PURPOSE':
+      case 'PROJECT_IMPORTS':
         if (typeof value === 'string' && value.length < MAX_VALUE_LENGTH) {
           validated[key] = value;
         }

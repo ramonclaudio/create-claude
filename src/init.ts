@@ -76,12 +76,22 @@ async function validateSkelFiles(): Promise<void> {
     '.claude/settings.local.json',
     '.claude/agents/pre-commit.md',
     '.claude/agents/refactor.md',
+    '.claude/agents/debugger.md',
+    '.claude/commands/commit.md',
+    '.claude/commands/explain.md',
+    '.claude/commands/fix.md',
+    '.claude/commands/optimize.md',
+    '.claude/commands/pr.md',
+    '.claude/commands/review.md',
     '.claude/commands/test.md',
     '.claude/commands/validate.md',
     '.claude/hooks/format.cjs',
     '.claude/hooks/safety.cjs',
+    '.claude/hooks/session-end.cjs',
     '.claude/output-styles/terse.md',
     '.claude/scripts/statusline.cjs',
+    '.claude/scripts/statusline-git.cjs',
+    '.claude/scripts/statusline-detect.cjs',
     'CLAUDE.md'
   ];
   

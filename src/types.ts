@@ -37,6 +37,7 @@ export interface TemplateVariables {
   VERSION_CONTROL: string;
   FRAMEWORK: string;
   PURPOSE?: string;
+  PROJECT_IMPORTS?: string;
   HAS_FRAMEWORK?: boolean;
   HAS_PACKAGE_MANAGER?: boolean;
   HAS_GIT?: boolean;
