@@ -5,6 +5,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.13] - 2025-09-07
+
+### Fixed
+
+- **NPM Warnings**: Normalized bin paths to resolve npm publish warnings about cleaned script names
+- **Package Configuration**: Applied `npm pkg fix` to resolve bin path formatting issues
+
+### Security
+
+- **Code Ownership**: Added CODEOWNERS file for better code review practices and accountability
+- **Branch Protection**: Enhanced OpenSSF Scorecard rating with code owner requirements
+- **Review Process**: Established clear ownership structure for all repository files
+
+### Technical
+
+- Removed leading `./` from bin paths in package.json per npm best practices
+- CODEOWNERS file covers all critical paths including source, docs, CI/CD, and security files
+- Improved repository governance for future contributions
+
 ## [0.1.12] - 2025-09-07
 
 ### Security

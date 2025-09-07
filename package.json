@@ -16,8 +16,8 @@
     "./cli": "./dist/cli.js"
   },
   "bin": {
-    "create-claude": "./dist/cli.js",
-    "cld": "./dist/cli.js"
+    "create-claude": "dist/cli.js",
+    "cld": "dist/cli.js"
   },
   "files": [
     "dist",

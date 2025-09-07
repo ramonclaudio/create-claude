@@ -1,0 +1,27 @@
+# CODEOWNERS for create-claude
+# This file defines code ownership for automatic review requests
+# https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+
+# Global owner for all files
+* @RMNCLDYO
+
+# Source code
+/src/ @RMNCLDYO
+*.js @RMNCLDYO
+*.ts @RMNCLDYO
+*.json @RMNCLDYO
+
+# Configuration and templates
+/.claude/ @RMNCLDYO
+/templates/ @RMNCLDYO
+
+# Documentation
+*.md @RMNCLDYO
+/docs/ @RMNCLDYO
+
+# CI/CD and workflows
+/.github/ @RMNCLDYO
+
+# Security-sensitive files
+/SECURITY.md @RMNCLDYO
+/.github/workflows/ @RMNCLDYO
