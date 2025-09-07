@@ -107,12 +107,26 @@ jobs:
         with:
           subject-path: ${{ env.PACKAGE_FILE }}
           
-      - name: Generate comprehensive SBOMs with Syft
+      - name: Generate SPDX JSON SBOM
         uses: anchore/sbom-action@e11c554f704a0b820cbf8c51673f6945e0731532 # v0.20.0
         with:
           path: .
-          format: 'spdx-json,cyclonedx-json,cyclonedx-xml'
-          output-file: 'create-claude-${{ env.VERSION }}.sbom'
+          format: 'spdx-json'
+          output-file: 'create-claude-${{ env.VERSION }}.sbom.spdx.json'
+          
+      - name: Generate CycloneDX JSON SBOM
+        uses: anchore/sbom-action@e11c554f704a0b820cbf8c51673f6945e0731532 # v0.20.0
+        with:
+          path: .
+          format: 'cyclonedx-json'
+          output-file: 'create-claude-${{ env.VERSION }}.sbom.cyclonedx.json'
+          
+      - name: Generate CycloneDX XML SBOM
+        uses: anchore/sbom-action@e11c554f704a0b820cbf8c51673f6945e0731532 # v0.20.0
+        with:
+          path: .
+          format: 'cyclonedx-xml'
+          output-file: 'create-claude-${{ env.VERSION }}.sbom.cyclonedx.xml'
           
       - name: Generate legacy SPDX with Microsoft tool
         run: |
