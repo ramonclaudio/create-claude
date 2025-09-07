@@ -85,9 +85,8 @@ jobs:
       - name: Sign package with minisign
         run: |
           if [ ! -f minisign.key.skip ]; then
-            # Export password as environment variable for minisign
-            export MINISIGN_PASS="${{ secrets.MINISIGN_PASSPHRASE }}"
-            minisign -Sm "$PACKAGE_FILE" -s minisign.key -t "create-claude npm package v$VERSION - $(date -u +%Y-%m-%d)"
+            # Use -W flag to read password from stdin
+            echo "${{ secrets.MINISIGN_PASSPHRASE }}" | minisign -Sm "$PACKAGE_FILE" -s minisign.key -W -t "create-claude npm package v$VERSION - $(date -u +%Y-%m-%d)"
             echo "✓ Successfully signed package with minisign"
           else
             echo "::warning::Skipping minisign signature generation"
@@ -132,15 +131,12 @@ jobs:
           
       - name: Sign all SBOMs and attestations
         run: |
-          # Export password as environment variable for minisign
-          export MINISIGN_PASS="${{ secrets.MINISIGN_PASSPHRASE }}"
-          
           # Sign all SBOM files with both minisign and GPG (if keys available)
           for sbom in create-claude-$VERSION.sbom.* create-claude-$VERSION.ms-spdx.json; do
             if [ -f "$sbom" ]; then
               echo "Signing $sbom"
               if [ ! -f minisign.key.skip ]; then
-                minisign -Sm "$sbom" -s minisign.key -t "SBOM for create-claude v$VERSION"
+                echo "${{ secrets.MINISIGN_PASSPHRASE }}" | minisign -Sm "$sbom" -s minisign.key -W -t "SBOM for create-claude v$VERSION"
               fi
               gpg --armor --detach-sign --output "$sbom.asc" "$sbom"
             fi
@@ -148,7 +144,7 @@ jobs:
           
           # Find and sign any GitHub attestation files
           if [ ! -f minisign.key.skip ]; then
-            find . -name "*.intoto.jsonl" -exec minisign -Sm {} -s minisign.key -t "SLSA Attestation for create-claude v$VERSION" \;
+            find . -name "*.intoto.jsonl" -exec sh -c 'echo "${{ secrets.MINISIGN_PASSPHRASE }}" | minisign -Sm "$1" -s minisign.key -W -t "SLSA Attestation for create-claude v$VERSION"' _ {} \;
           fi
           find . -name "*.intoto.jsonl" -exec gpg --armor --detach-sign --output {}.asc {} \;
           
