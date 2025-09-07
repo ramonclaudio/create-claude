@@ -19,6 +19,8 @@ jobs:
   security:
     name: Security Scan
     runs-on: ubuntu-latest
+    # Skip job for merge commits (they were already tested in PR) except for scheduled runs
+    if: github.event_name == 'schedule' || github.event_name == 'pull_request' || !startsWith(github.event.head_commit.message, 'Merge pull request')
     permissions:
       contents: read
       security-events: write
