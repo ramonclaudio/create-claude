@@ -6,6 +6,7 @@ argument-hint: [file-or-directory]
 Review $ARGUMENTS
 
 Focus on:
+
 1. Performance bottlenecks
 2. Security vulnerabilities  
 3. Code smells

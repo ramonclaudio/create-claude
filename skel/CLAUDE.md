@@ -51,4 +51,5 @@ Example: `Fixed parser.js:23` not "I've identified and resolved the memory leak 
 ## Individual Preferences
 
 Include your personal preferences (not checked into git):
+
 - @~/.claude/{{PROJECT_NAME}}-preferences.md

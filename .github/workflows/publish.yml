@@ -6,13 +6,16 @@ on:
       - 'v*'
 
 permissions:
-  id-token: write
-  contents: write
-  attestations: write
-
+  contents: read
+  id-token: write  # Required for npm provenance
+  
 jobs:
   publish:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write  # Required for creating releases
+      id-token: write  # Required for npm provenance
+      attestations: write  # Required for SLSA attestations
     steps:
       - name: Harden Runner
         uses: step-security/harden-runner@0080882f6c36860b6ba35c610c98ce87d4e2f26f # v2.12.0
@@ -53,11 +56,6 @@ jobs:
       - run: npm run build --if-present
       - run: npm test
       
-      - name: Publish with provenance
-        run: npm publish --provenance --access public
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-      
       - name: Create package tarball and set version
         run: |
           npm pack
@@ -69,6 +67,8 @@ jobs:
           # Download minisign with checksum verification
           curl -LO https://github.com/jedisct1/minisign/releases/download/0.12/minisign-0.12-linux.tar.gz
           curl -LO https://github.com/jedisct1/minisign/releases/download/0.12/minisign-0.12-linux.tar.gz.sha256
+          # Fix checksum format (file contains only hash, not "hash  filename" format)
+          echo "$(cat minisign-0.12-linux.tar.gz.sha256)  minisign-0.12-linux.tar.gz" > minisign-0.12-linux.tar.gz.sha256
           sha256sum -c minisign-0.12-linux.tar.gz.sha256
           tar xzf minisign-0.12-linux.tar.gz
           sudo mv minisign-linux/x86_64/minisign /usr/local/bin/
@@ -135,10 +135,14 @@ jobs:
           find . -name "*.intoto.jsonl" -exec minisign -Sm {} -s minisign.key -t "SLSA Attestation for create-claude v$VERSION" \;
           find . -name "*.intoto.jsonl" -exec gpg --armor --detach-sign --output {}.asc {} \;
           
-      - name: Cleanup sensitive files and temporary artifacts
+      - name: Cleanup sensitive files
         run: |
           rm -f minisign.key
-          rm -f *.tar.gz *.sha256
+          
+      - name: Publish with provenance to NPM
+        run: npm publish --provenance --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           
       - name: Create comprehensive GitHub Release
         uses: softprops/action-gh-release@01570a1f39cb168c169c802c3bceb9e93fb10974 # v2.3.2

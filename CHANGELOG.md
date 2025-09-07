@@ -5,6 +5,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.10] - 2025-09-07
+
+### Fixed
+
+- **Publish Workflow**: Fixed minisign checksum verification format issue preventing security artifact generation
+- **Workflow Security**: Improved token permissions following OpenSSF best practices with read-only defaults
+- **Workflow Ordering**: Reorganized publish workflow to ensure all security artifacts are generated before NPM publish
+- **Template Formatting**: Fixed missing newlines in command and agent template files
+
+### Security
+
+- **Token Permissions**: Set top-level permissions to read-only with job-level write permissions only where required
+- **OpenSSF Compliance**: Aligned publish workflow with OpenSSF Scorecard requirements for signed releases and SBOMs
+
 ## [0.1.9] - 2025-09-07
 
 ### Added

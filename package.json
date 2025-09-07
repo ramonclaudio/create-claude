@@ -1,6 +1,6 @@
 {
   "name": "create-claude",
-  "version": "0.1.9",
+  "version": "0.1.10",
   "description": "Claude Code setup that just works. Bootstrap every project with agents, hooks, commands, and smart permissions. One command, zero headaches.",
   "type": "module",
   "sideEffects": false,
