@@ -193,7 +193,7 @@ jobs:
           npm pkg set name="create-claude"
           
       - name: Create comprehensive GitHub Release
-        uses: softprops/action-gh-release@01570a1f39cb168c169c802c3bceb9e93fb10974 # v2.3.2
+        uses: softprops/action-gh-release@6cbd405e2c4e67a21c47fa9e383d020e4e28b836 # v2.3.3
         with:
           tag_name: ${{ github.ref_name }}
           name: ${{ github.ref_name }}
