@@ -110,21 +110,21 @@ jobs:
           subject-path: ${{ env.PACKAGE_FILE }}
           
       - name: Generate SPDX JSON SBOM
-        uses: anchore/sbom-action@f8bdd1d8ac5e901a77a92f111440fdb1b593736b # v0.20.6
+        uses: anchore/sbom-action@8e94d75ddd33f69f691467e42275782e4bfefe84 # v0.20.9
         with:
           path: .
           format: 'spdx-json'
           output-file: 'create-claude-${{ env.VERSION }}.sbom.spdx.json'
           
       - name: Generate CycloneDX JSON SBOM
-        uses: anchore/sbom-action@f8bdd1d8ac5e901a77a92f111440fdb1b593736b # v0.20.6
+        uses: anchore/sbom-action@8e94d75ddd33f69f691467e42275782e4bfefe84 # v0.20.9
         with:
           path: .
           format: 'cyclonedx-json'
           output-file: 'create-claude-${{ env.VERSION }}.sbom.cyclonedx.json'
           
       - name: Generate CycloneDX XML SBOM
-        uses: anchore/sbom-action@f8bdd1d8ac5e901a77a92f111440fdb1b593736b # v0.20.6
+        uses: anchore/sbom-action@8e94d75ddd33f69f691467e42275782e4bfefe84 # v0.20.9
         with:
           path: .
           format: 'cyclonedx-xml'
