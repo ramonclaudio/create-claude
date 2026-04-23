@@ -199,4 +199,4 @@ Contributions welcome! Please read [SECURITY.md](SECURITY.md) first, then:
 
 ## License
 
-MIT © [Ramon Claudio](https://github.com/Ramon Claudio)
+MIT © [Ramon Claudio](https://github.com/ramonclaudio)
