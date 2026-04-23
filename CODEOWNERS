@@ -3,25 +3,25 @@
 # https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
 
 # Global owner for all files
-* @RMNCLDYO
+* @Ramon Claudio
 
 # Source code
-/src/ @RMNCLDYO
-*.js @RMNCLDYO
-*.ts @RMNCLDYO
-*.json @RMNCLDYO
+/src/ @Ramon Claudio
+*.js @Ramon Claudio
+*.ts @Ramon Claudio
+*.json @Ramon Claudio
 
 # Configuration and templates
-/.claude/ @RMNCLDYO
-/templates/ @RMNCLDYO
+/.claude/ @Ramon Claudio
+/templates/ @Ramon Claudio
 
 # Documentation
-*.md @RMNCLDYO
-/docs/ @RMNCLDYO
+*.md @Ramon Claudio
+/docs/ @Ramon Claudio
 
 # CI/CD and workflows
-/.github/ @RMNCLDYO
+/.github/ @Ramon Claudio
 
 # Security-sensitive files
-/SECURITY.md @RMNCLDYO
-/.github/workflows/ @RMNCLDYO
+/SECURITY.md @Ramon Claudio
+/.github/workflows/ @Ramon Claudio

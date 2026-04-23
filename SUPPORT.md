@@ -6,8 +6,8 @@ Thanks for using create-claude! This document explains how to get help with the 
 
 ### Community Support
 
-- **GitHub Discussions**: Ask questions and discuss ideas with the community at [GitHub Discussions](https://github.com/RMNCLDYO/create-claude/discussions)
-- **Issues**: Report bugs or request features through [GitHub Issues](https://github.com/RMNCLDYO/create-claude/issues)
+- **GitHub Discussions**: Ask questions and discuss ideas with the community at [GitHub Discussions](https://github.com/ramonclaudio/create-claude/discussions)
+- **Issues**: Report bugs or request features through [GitHub Issues](https://github.com/ramonclaudio/create-claude/issues)
 
 ### Documentation
 
@@ -45,7 +45,7 @@ Before creating an issue, please:
 
 ## Commercial Support
 
-For priority support, custom implementations, or consulting services, contact <hi@rmncldyo.com>.
+For priority support, custom implementations, or consulting services, contact <hello@ramonclaudio.com>.
 
 ## Contributing
 

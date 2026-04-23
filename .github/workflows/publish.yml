@@ -139,7 +139,7 @@ jobs:
           chmod +x sbom-tool-linux-x64
           
           # Generate Microsoft SBOM
-          ./sbom-tool-linux-x64 generate -b . -bc . -pn create-claude -pv $VERSION -ps RMNCLDYO -nsb https://github.com/RMNCLDYO/create-claude
+          ./sbom-tool-linux-x64 generate -b . -bc . -pn create-claude -pv $VERSION -ps Ramon Claudio -nsb https://github.com/ramonclaudio/create-claude
           mv _manifest/spdx_2.2/manifest.spdx.json "create-claude-$VERSION.ms-spdx.json"
           
           # Cleanup
@@ -175,12 +175,12 @@ jobs:
         with:
           node-version: '22'
           registry-url: 'https://npm.pkg.github.com'
-          scope: '@rmncldyo'
+          scope: '@ramonclaudio'
           
       - name: Publish to GitHub Packages
         run: |
           # Update package name for GitHub Packages (scoped)
-          npm pkg set name="@rmncldyo/create-claude"
+          npm pkg set name="@ramonclaudio/create-claude"
           
           # Publish to GitHub Packages with provenance
           npm publish --provenance --access public
@@ -207,7 +207,7 @@ jobs:
             
             **Install from GitHub Packages:**
             ```bash
-            npm install -g @rmncldyo/create-claude@${{ github.ref_name }} --registry=https://npm.pkg.github.com
+            npm install -g @ramonclaudio/create-claude@${{ github.ref_name }} --registry=https://npm.pkg.github.com
             ```
             
             ## 🔐 Security & Verification
@@ -249,7 +249,7 @@ jobs:
             
             ---
             
-            **Full Changelog**: [CHANGELOG.md](https://github.com/RMNCLDYO/create-claude/blob/main/CHANGELOG.md)
+            **Full Changelog**: [CHANGELOG.md](https://github.com/ramonclaudio/create-claude/blob/main/CHANGELOG.md)
           files: |
             create-claude-*.tgz
             create-claude-*.tgz.minisig

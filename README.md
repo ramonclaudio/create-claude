@@ -195,8 +195,8 @@ Contributions welcome! Please read [SECURITY.md](SECURITY.md) first, then:
 
 ## Links
 
-[**Issues**](https://github.com/RMNCLDYO/create-claude/issues) • [**Changelog**](https://github.com/RMNCLDYO/create-claude/blob/main/CHANGELOG.md) • [**Claude Code Docs**](https://docs.anthropic.com/en/docs/claude-code) • [**Security**](SECURITY.md)
+[**Issues**](https://github.com/ramonclaudio/create-claude/issues) • [**Changelog**](https://github.com/ramonclaudio/create-claude/blob/main/CHANGELOG.md) • [**Claude Code Docs**](https://docs.anthropic.com/en/docs/claude-code) • [**Security**](SECURITY.md)
 
 ## License
 
-MIT © [RMNCLDYO](https://github.com/RMNCLDYO)
+MIT © [Ramon Claudio](https://github.com/Ramon Claudio)

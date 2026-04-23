@@ -10,7 +10,7 @@
 ## Quick Start
 
 ```bash
-git clone https://github.com/RMNCLDYO/create-claude.git
+git clone https://github.com/ramonclaudio/create-claude.git
 cd create-claude
 npm install
 npm test
@@ -54,7 +54,7 @@ npm run lint    # TypeScript strict mode
 
 ## Issues
 
-Found a bug? [Open an issue](https://github.com/RMNCLDYO/create-claude/issues) with:
+Found a bug? [Open an issue](https://github.com/ramonclaudio/create-claude/issues) with:
 - Node version
 - Operating system
 - Error message

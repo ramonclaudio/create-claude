@@ -4,11 +4,11 @@ type: software
 title: "create-claude"
 abstract: "Claude Code setup that just works. Bootstrap every project with agents, hooks, commands, and smart permissions. One command, zero headaches."
 authors:
-  - given-names: "RMNCLDYO"
-    email: "hi@rmncldyo.com"
+  - given-names: "Ramon Claudio"
+    email: "hello@ramonclaudio.com"
     orcid: "https://orcid.org/0009-0008-2148-3095"
-repository-code: "https://github.com/RMNCLDYO/create-claude"
-url: "https://github.com/RMNCLDYO/create-claude"
+repository-code: "https://github.com/ramonclaudio/create-claude"
+url: "https://github.com/ramonclaudio/create-claude"
 repository-artifact: "https://www.npmjs.com/package/create-claude"
 keywords:
   - "claude"
@@ -28,6 +28,6 @@ keywords:
   - "zero-config"
   - "productivity"
 license: MIT
-license-url: "https://github.com/RMNCLDYO/create-claude/blob/main/LICENSE"
+license-url: "https://github.com/ramonclaudio/create-claude/blob/main/LICENSE"
 version: "0.1.13"
 date-released: "2025-09-07"
