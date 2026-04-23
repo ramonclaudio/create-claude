@@ -1,54 +1,46 @@
 # create-claude
 
-Claude Code setup that just works. Bootstrap every project with agents, hooks, commands, and smart permissions. One command, zero headaches.
+[![npm](https://img.shields.io/npm/v/create-claude)](https://www.npmjs.com/package/create-claude)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-[![version](https://img.shields.io/npm/v/create-claude.svg?label=version&color=brightgreen)](https://www.npmjs.com/package/create-claude)
-[![downloads](https://img.shields.io/npm/dm/create-claude.svg?label=downloads&color=blue)](https://www.npmjs.com/package/create-claude)
-[![package size](https://img.shields.io/npm/unpacked-size/create-claude?label=package%20size&color=yellow)](https://www.npmjs.com/package/create-claude)
-[![license](https://img.shields.io/badge/license-MIT-red.svg)](https://opensource.org/licenses/MIT)
+I was manually copying the same Claude Code config into every new project: `.claude/settings.local.json`, a pile of hooks, a dozen slash commands, a few subagents, my terse output style, a `CLAUDE.md`. I wanted one command that dropped the whole thing in. So I built this.
 
-## Quick Start
+Claude Code setup that just works. Bootstrap every project with agents, hooks, commands, and smart permissions. One command, zero dependencies, zero overhead.
+
+## Quick start
 
 ```bash
 npm create claude
 ```
 
-*Adds **local** Claude Code config files to your project. ZERO dependencies, ZERO  overhead.*
-
-## Installation Options
-
-### Package Managers
+## Install
 
 ```bash
 npm create claude               # npm
-pnpm create claude              # pnpm  
+pnpm create claude              # pnpm
 bun create claude               # bun
 yarn create claude              # yarn
 ```
 
-### Flags
+Flags:
 
 ```bash
-npm create claude --dry-run     # Preview files
-npm create claude --help        # All options
+npm create claude --dry-run     # preview files
+npm create claude --help        # all options
 ```
 
-### Shortcuts
+Shorter alias:
 
 ```bash
-cld                             # Short alias
-npx cld                         # Via npx
+cld
+npx cld
 ```
 
-## Programmatic Usage
-
-### Installation
+## Programmatic
 
 ```bash
 npm i create-claude
 ```
-
-### Usage
 
 ```typescript
 import { init } from 'create-claude';
@@ -56,147 +48,77 @@ import { init } from 'create-claude';
 await init('./my-project');
 ```
 
-## Features
+## What's in the box
 
-### Maximum Autonomy with Safety
+### Safety
 
-- **bypassPermissions mode**: Claude Code operates freely while dangerous operations are blocked
-- **Smart safety hooks**: Only blocks truly destructive commands (rm -rf /, sudo rm, disk formatting)
-- **Delete confirmations**: All file/directory deletions require explicit user approval
+- `bypassPermissions` mode: Claude operates freely, but safety hooks block destructive commands (`rm -rf /`, `sudo rm`, disk formatting)
+- All file/directory deletions require explicit user approval
+- SHA256 checksums + timestamped backups on every file operation
 
-### 8 Custom Slash Commands
+### 8 slash commands
 
-- **`/commit`**: Create git commits with Haiku model for cost efficiency
-- **`/explain`**: Get concise code explanations
-- **`/fix`**: Fix issues with structured approach
-- **`/optimize`**: Performance improvements
-- **`/pr`**: Create pull requests with git context
-- **`/review`**: Brutal code reviews
-- **`/test`**: Run tests with pattern support
-- **`/validate`**: Lint, typecheck, and format
+- `/commit`: git commits with Haiku (cost-efficient)
+- `/explain`: concise code explanations
+- `/fix`: structured bug fixes
+- `/optimize`: performance improvements
+- `/pr`: pull requests with git context
+- `/review`: brutal code reviews
+- `/test`: test runner with pattern support
+- `/validate`: lint, typecheck, format
 
-### 3 Specialized Subagents
+### 3 subagents
 
-- **pre-commit**: Ruthless validation before commits
-- **refactor**: Aggressive complexity reduction
-- **debugger**: Root cause analysis and fixes
+- `pre-commit`: ruthless validation before commits
+- `refactor`: aggressive complexity reduction
+- `debugger`: root cause analysis and fixes
 
-### Production-Ready Configuration
+### Config
 
-- **Session hooks**: Automatic cleanup on exit
-- **Advanced statusline**: Git status, framework detection, color-coded information with modular helpers
-- **Import-based memory**: CLAUDE.md uses `@` imports for README and dynamically includes project configs (package.json, Cargo.toml, etc.)
-- **Terse output style**: Minimal, efficient responses without bloat
+- Session hooks (cleanup on exit)
+- Advanced statusline: git status, framework detection, color-coded with modular helpers
+- `CLAUDE.md` uses `@` imports for README and auto-pulls project configs (`package.json`, `Cargo.toml`, etc.)
+- Terse output style
 
-## FAQ
+## Requirements
 
-<details>
-<summary><strong>Is it safe to run?</strong></summary>
+- Node.js 18+
+- [Claude Code](https://claude.ai/code)
 
-Yes. It only creates config files, never modifies your code. Each file operation uses SHA256 checksums and creates timestamped backups.
+## What gets created
 
-```bash
-# If something goes wrong, backups are here:
-ls .create-claude-backup-*
+```
+.claude/
+├── settings.local.json
+├── hooks/
+│   ├── format.cjs
+│   ├── safety.cjs
+│   └── session-end.cjs
+├── agents/
+│   ├── pre-commit.md
+│   ├── refactor.md
+│   └── debugger.md
+├── commands/
+│   ├── commit.md, explain.md, fix.md, optimize.md
+│   └── pr.md, review.md, test.md, validate.md
+├── scripts/
+│   ├── statusline.cjs
+│   ├── statusline-git.cjs
+│   └── statusline-detect.cjs
+└── output-styles/
+    └── terse.md
+
+CLAUDE.md
 ```
 
-</details>
-
-<details>
-<summary><strong>How do I remove it?</strong></summary>
-
-Delete the config files:
+## Remove it
 
 ```bash
 rm -rf .claude CLAUDE.md
 ```
 
 Your original code stays untouched.
-</details>
-
-<details>
-<summary><strong>What are the requirements?</strong></summary>
-
-- Node.js 18+
-- [Claude Code](https://claude.ai/code) (the CLI tool)
-
-That's it. No global installs, no dependencies.
-</details>
-
-<details>
-<summary><strong>Does it work with my tools?</strong></summary>
-
-It auto-detects:
-
-- **Formatters**: Prettier, ESLint, Biome, dprint
-- **Package managers**: npm, yarn, pnpm, bun  
-- **Languages**: JavaScript, TypeScript, Python, Go, Rust
-- **Frameworks**: React, Vue, Next.js, etc.
-
-Can't find your tool? It falls back to sensible defaults.
-</details>
-
-<details>
-<summary><strong>What files does it create?</strong></summary>
-
-Creates 20 files in total:
-
-```
-.claude/
-├── settings.local.json     # Permissions, tool detection
-├── hooks/
-│   ├── format.cjs         # Auto-format on save
-│   ├── safety.cjs         # Block dangerous operations
-│   └── session-end.cjs    # Cleanup on exit
-├── agents/
-│   ├── pre-commit.md      # Ruthless validation
-│   ├── refactor.md        # Complexity reduction
-│   └── debugger.md        # Root cause analysis
-├── commands/
-│   ├── commit.md          # Git commits with Haiku
-│   ├── explain.md         # Code explanations
-│   ├── fix.md             # Structured fixes
-│   ├── optimize.md        # Performance improvements
-│   ├── pr.md              # Pull request creation
-│   ├── review.md          # Brutal code reviews
-│   ├── test.md            # Test runner
-│   └── validate.md        # Lint, typecheck, format
-├── scripts/
-│   ├── statusline.cjs         # Git status in prompt
-│   ├── statusline-git.cjs     # Git operations helper
-│   └── statusline-detect.cjs  # Framework detection helper
-└── output-styles/
-    └── terse.md                # Minimal output style
-
-CLAUDE.md                   # Project-specific instructions
-```
-
-</details>
-
-## Security
-
-This project follows security best practices:
-
-- All dependencies are audited and kept up-to-date
-- Code is scanned with CodeQL and other security tools
-- OpenSSF Scorecard certified
-- Signed releases with build provenance
-
-Report security issues: [SECURITY.md](SECURITY.md)
-
-## Contributing
-
-Contributions welcome! Please read [SECURITY.md](SECURITY.md) first, then:
-
-1. Fork the repo
-2. Create a feature branch
-3. Run `npm run validate` before committing
-4. Submit a pull request
-
-## Links
-
-[**Issues**](https://github.com/ramonclaudio/create-claude/issues) • [**Changelog**](https://github.com/ramonclaudio/create-claude/blob/main/CHANGELOG.md) • [**Claude Code Docs**](https://docs.anthropic.com/en/docs/claude-code) • [**Security**](SECURITY.md)
 
 ## License
 
-MIT © [Ramon Claudio](https://github.com/ramonclaudio)
+MIT
